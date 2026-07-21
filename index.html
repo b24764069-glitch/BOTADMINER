@@ -4,754 +4,682 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADMINBOT Pro</title>
-    <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --ios-bg: #000000;
-            --ios-card: #1c1c1e;
-            --ios-card-secondary: #2c2c2e;
-            --ios-blue: #0a84ff;
-            --ios-green: #30d158;
-            --ios-red: #ff453a;
-            --ios-orange: #ff9f0a;
-            --ios-purple: #bf5af2;
-            --ios-text: #ffffff;
-            --ios-subtext: #8e8e93;
-            --squircle-radius: 16px;
-            --button-radius: 12px;
+            --tg-bg: #000000;
+            --tg-card: #1c1c1d;
+            --tg-text: #ffffff;
+            --tg-subtext: #8e8e93;
+            --tg-blue: #0a84ff;
+            --tg-blue-hover: #007aff;
+            --tg-red: #ff453a;
+            --tg-border: #2c2c2e;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--ios-bg);
-            color: var(--ios-text);
-            padding-bottom: 90px;
+            background-color: var(--tg-bg);
+            color: var(--tg-text);
             user-select: none;
             overflow-x: hidden;
+            font-size: 17px;
         }
 
-        /* Header iOS Style */
-        .ios-header {
-            padding: 16px;
-            background: rgba(28, 28, 30, 0.85);
+        /* 📱 Telegram iOS Header */
+        .tg-header {
+            background: rgba(28, 28, 29, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             position: sticky;
             top: 0;
-            z-index: 100;
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 0.5px solid var(--tg-border);
         }
 
-        .ios-header h1 {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.4px;
-        }
-
-        .status-badge {
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: rgba(255, 69, 58, 0.2);
-            color: var(--ios-red);
+        .tg-header .back-btn {
+            color: var(--tg-blue);
+            font-size: 17px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
+            font-weight: 400;
+        }
+
+        .tg-header .title {
             font-weight: 600;
+            font-size: 17px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        .status-badge.online {
-            background: rgba(48, 209, 88, 0.2);
-            color: var(--ios-green);
-        }
-
-        .container {
-            padding: 16px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Onboarding / Bot Selection View */
-        #bot-selection-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 80vh;
-            padding: 12px 0;
-        }
-
-        .app-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 22px;
-            background: linear-gradient(135deg, var(--ios-blue), var(--ios-purple));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            color: white;
-            margin-bottom: 16px;
-            box-shadow: 0 10px 25px rgba(10, 132, 255, 0.3);
-        }
-
-        .bot-list-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--ios-card-secondary);
-            border-radius: var(--button-radius);
-            padding: 12px 14px;
-            margin-bottom: 8px;
+        .tg-header .option-btn {
+            color: var(--tg-blue);
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: background 0.2s;
         }
 
-        .bot-list-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+        /* 📋 Telegram Grouped Lists */
+        .tg-group {
+            margin-top: 24px;
+            margin-bottom: 24px;
         }
 
-        .bot-info-short {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .mini-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--ios-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        /* Tab Content Control */
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Cards & Squircle Style */
-        .card {
-            background: var(--ios-card);
-            border-radius: var(--squircle-radius);
-            padding: 16px;
-            margin-bottom: 16px;
-            border: 0.5px solid rgba(255, 255, 255, 0.08);
-            width: 100%;
-        }
-
-        .card-title {
-            font-size: 12px;
-            color: var(--ios-subtext);
-            margin-bottom: 12px;
+        .tg-group-title {
+            font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* iOS Inputs */
-        .input-group {
-            margin-bottom: 12px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--ios-subtext);
-            margin-bottom: 6px;
+            color: var(--tg-subtext);
+            padding: 0 16px 8px;
             font-weight: 500;
         }
 
-        .ios-input, .ios-textarea, .ios-select {
+        .tg-list {
+            background: var(--tg-card);
+            border-radius: 10px;
+            margin: 0 16px;
+            overflow: hidden;
+        }
+
+        .tg-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 0.5px solid var(--tg-border);
+            cursor: pointer;
+            min-height: 44px;
+            transition: background 0.2s;
+        }
+
+        .tg-item:active {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tg-item:last-child {
+            border-bottom: none;
+        }
+
+        .tg-item-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .tg-icon-box {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            background: transparent;
+            border: 1px solid var(--tg-subtext);
+            color: var(--tg-subtext);
+        }
+        
+        /* Icon styles mapping */
+        .icon-info { border: 1.5px solid var(--tg-subtext); border-radius: 50%; width: 22px; height: 22px; font-size: 12px; }
+        .icon-cmd { border: 1.5px solid var(--tg-subtext); border-radius: 6px; width: 22px; height: 22px; font-size: 12px; }
+        .icon-app { border: none; font-size: 22px; }
+        .icon-bot { border: none; font-size: 22px; }
+
+        .tg-item-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--tg-subtext);
+            font-size: 17px;
+        }
+
+        .tg-chevron::after {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 12px;
+            color: #5c5c5e;
+        }
+
+        .tg-caption {
+            font-size: 13px;
+            color: var(--tg-subtext);
+            padding: 8px 16px;
+            line-height: 1.4;
+        }
+
+        .tg-caption a {
+            color: var(--tg-blue);
+            text-decoration: none;
+        }
+
+        /* 🎛️ Inputs & Textareas */
+        .tg-input-row {
+            background: var(--tg-card);
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tg-input {
             width: 100%;
-            background: var(--ios-card-secondary);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--button-radius);
-            padding: 12px 14px;
-            color: var(--ios-text);
-            font-size: 15px;
+            background: transparent;
+            border: none;
+            color: var(--tg-text);
+            font-size: 17px;
+            padding: 12px 16px;
             outline: none;
-            transition: border-color 0.2s;
         }
 
-        .ios-input:focus, .ios-textarea:focus, .ios-select:focus {
-            border-color: var(--ios-blue);
+        .tg-input::placeholder {
+            color: #5c5c5e;
         }
 
-        .ios-textarea {
+        .tg-textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--tg-text);
+            font-size: 17px;
+            padding: 12px 16px;
+            outline: none;
             resize: vertical;
             min-height: 80px;
         }
 
-        /* iOS Squircle Buttons */
-        .btn {
-            width: 100%;
-            background: var(--ios-blue);
+        /* 🔘 Toggle Switch */
+        .tg-toggle {
+            appearance: none;
+            width: 50px;
+            height: 30px;
+            background: #39393d;
+            border-radius: 15px;
+            position: relative;
+            outline: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .tg-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 26px;
+            height: 26px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .tg-toggle:checked {
+            background: #34c759;
+        }
+
+        .tg-toggle:checked::after {
+            transform: translateX(20px);
+        }
+
+        /* 🔵 Big Update Button */
+        .tg-btn-primary {
+            background: var(--tg-blue);
             color: white;
             border: none;
-            border-radius: var(--button-radius);
+            width: calc(100% - 32px);
+            margin: 20px 16px;
             padding: 14px;
-            font-size: 15px;
+            border-radius: 10px;
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: opacity 0.2s, transform 0.1s;
         }
 
-        .btn:active {
-            opacity: 0.75;
-            transform: scale(0.98);
-        }
+        .text-blue { color: var(--tg-blue) !important; }
+        .text-red { color: var(--tg-red) !important; }
 
-        .btn-secondary {
-            background: var(--ios-card-secondary);
-            color: var(--ios-blue);
-        }
-
-        .btn-danger {
-            background: rgba(255, 69, 58, 0.15);
-            color: var(--ios-red);
-        }
-
-        .btn-success {
-            background: rgba(48, 209, 88, 0.15);
-            color: var(--ios-green);
-        }
-
-        .btn-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-        }
-
-        /* Navigation Bar (Bottom iOS Tabs) */
-        .navbar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(28, 28, 30, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0 25px 0;
-            border-top: 0.5px solid rgba(255, 255, 255, 0.1);
-            z-index: 1000;
-        }
-
-        .nav-item {
+        /* Icon Headers for specific pages */
+        .page-icon-header {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            color: var(--ios-subtext);
-            font-size: 10px;
-            cursor: pointer;
-            width: 20%;
+            padding: 30px 20px 10px;
             text-align: center;
-            font-weight: 500;
         }
+        .page-icon-header i { font-size: 48px; color: var(--tg-blue); margin-bottom: 12px; }
+        .page-icon-header h2 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+        .page-icon-header p { font-size: 15px; color: var(--tg-subtext); }
 
-        .nav-item i {
-            font-size: 18px;
-        }
-
-        .nav-item.active {
-            color: var(--ios-blue);
-        }
-
-        /* Profile & Bot Avatar Header */
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .avatar {
-            width: 60px;
-            height: 60px;
+        /* Bot Avatar UI */
+        .bot-avatar-large {
+            width: 70px;
+            height: 70px;
+            background: #2481cc;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--ios-blue), var(--ios-purple));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            font-weight: 700;
+            font-size: 28px;
+            font-weight: bold;
             color: white;
-            flex-shrink: 0;
+            margin: 0 auto 10px;
+        }
+        .bot-avatar-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .user-info h2 {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .user-info p {
-            font-size: 13px;
-            color: var(--ios-subtext);
-            margin-top: 2px;
-        }
-
-        /* Bug / Log Console */
+        /* Log Box from old code */
         .log-box {
-            background: #000000;
-            border-radius: var(--button-radius);
-            padding: 12px;
-            font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
-            font-size: 12px;
-            color: #30d158;
-            max-height: 180px;
-            overflow-y: auto;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            line-height: 1.5;
-        }
-
-        .log-item {
-            margin-bottom: 6px;
-            word-break: break-all;
-        }
-        .log-item.error { color: var(--ios-red); }
-        .log-item.info { color: var(--ios-blue); }
-        .log-item.warn { color: var(--ios-orange); }
-
-        /* Grid Preview for Keyboard Buttons */
-        .button-grid-preview {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .preview-btn {
-            background: var(--ios-card-secondary);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #000;
             border-radius: 10px;
             padding: 12px;
-            text-align: center;
-            font-size: 13px;
-            color: var(--ios-text);
-            font-weight: 500;
-        }
-
-        .pill {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            background: rgba(255,255,255,0.1);
-            color: var(--ios-subtext);
-        }
-
-        .accordion-item {
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding: 8px 0;
-        }
-        .accordion-item:last-child { border-bottom: none; }
-        .accordion-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--ios-blue);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-        }
-        .accordion-desc {
+            font-family: monospace;
             font-size: 12px;
-            color: var(--ios-subtext);
-            margin-top: 4px;
+            color: #30d158;
+            max-height: 150px;
+            overflow-y: auto;
+            margin: 0 16px 20px;
         }
+
+        /* View Manager */
+        .app-view { display: none; }
+        .app-view.active { display: block; }
     </style>
 </head>
 <body>
 
-    <!-- Main App Header -->
-    <div class="ios-header">
-        <h1>ADMINBOT Pro</h1>
-        <div class="status-badge" id="statusBadge">
-            <i class="fa-solid fa-circle" style="font-size: 7px;"></i>
-            <span id="statusText">Disconnected</span>
+    <!-- Global Header -->
+    <div class="tg-header" id="mainHeader">
+        <div class="back-btn" id="backBtn" onclick="goBack()" style="display: none;">
+            <i class="fa-solid fa-chevron-left"></i> Back
+        </div>
+        <div class="title" id="headerTitle">ADMINBOT Pro</div>
+        <div class="option-btn" id="headerOption"></div>
+    </div>
+
+    <!-- ==================== 1. LOGIN / BOT SELECTION ==================== -->
+    <div id="view-login" class="app-view active">
+        <div class="page-icon-header">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h2>ADMINBOT Pro</h2>
+            <p>Select an existing bot or add a new token</p>
+        </div>
+
+        <div class="tg-group" id="savedBotsCard" style="display: none;">
+            <div class="tg-group-title">Saved Bots</div>
+            <div class="tg-list" id="savedBotsContainer"></div>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-group-title">Add New Bot</div>
+            <div class="tg-list">
+                <div class="tg-input-row">
+                    <input type="text" id="newBotTokenInput" class="tg-input" placeholder="Bot API Token (from @BotFather)">
+                </div>
+            </div>
+            <button class="tg-btn-primary" onclick="addNewBot()">Connect Bot</button>
         </div>
     </div>
 
-    <div class="container">
-
-        <!-- ==================== SECTION 1: BOT SELECTOR & ADD BOT ==================== -->
-        <div id="bot-selection-screen">
-            <div class="app-icon">
-                <i class="fa-solid fa-shield-halved"></i>
-            </div>
-            <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 6px;">ADMINBOT Pro</h2>
-            <p style="font-size: 14px; color: var(--ios-subtext); margin-bottom: 20px; text-align: center; max-width: 320px;">
-                Select an existing bot or add a new bot token to manage.
-            </p>
-
-            <!-- Saved Bots List Card -->
-            <div class="card" id="savedBotsCard" style="display: none;">
-                <div class="card-title"><i class="fa-solid fa-list"></i> Select Saved Bot</div>
-                <div id="savedBotsContainer"></div>
-            </div>
-
-            <!-- Add New Bot Form Card -->
-            <div class="card">
-                <div class="card-title"><i class="fa-solid fa-plus"></i> Add New Bot</div>
-                <div class="input-group">
-                    <label>Bot API Token (from @BotFather):</label>
-                    <input type="text" id="newBotTokenInput" class="ios-input" placeholder="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ">
+    <!-- ==================== 2. MAIN SETTINGS MENU (Image 1) ==================== -->
+    <div id="view-main" class="app-view">
+        <div class="tg-group">
+            <div class="tg-group-title">Settings</div>
+            <div class="tg-list">
+                <div class="tg-item" onclick="openView('view-edit-info', 'Edit Info')">
+                    <div class="tg-item-left"><i class="fa-solid fa-info icon-info"></i> <span>Edit Info</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
-                <button class="btn" onclick="addNewBot()">
-                    <i class="fa-solid fa-plug"></i> Connect & Save Bot
-                </button>
+                <div class="tg-item" onclick="openView('view-commands', 'Commands')">
+                    <div class="tg-item-left"><i class="fa-solid fa-slash icon-cmd"></i> <span>Commands</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
+                </div>
+                <div class="tg-item" onclick="openView('view-miniapps', 'Mini Apps')">
+                    <div class="tg-item-left"><i class="fa-solid fa-border-all icon-app"></i> <span>Mini Apps</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
+                </div>
+                <div class="tg-item" onclick="openView('view-bot-settings', 'Bot Settings')">
+                    <div class="tg-item-left"><i class="fa-solid fa-robot icon-bot"></i> <span>Bot Settings</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
+                </div>
+                <div class="tg-item" onclick="openView('view-login-widget', 'Login Widget')">
+                    <div class="tg-item-left"><i class="fa-solid fa-key" style="color: var(--tg-subtext);"></i> <span>Login Widget</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
+                </div>
+                <div class="tg-item" onclick="alert('Games menu selected')">
+                    <div class="tg-item-left"><i class="fa-solid fa-gamepad" style="color: var(--tg-subtext);"></i> <span>Games</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
+                </div>
             </div>
         </div>
 
-        <!-- ==================== MAIN DASHBOARD ==================== -->
-        <div id="main-panel" style="display: none;">
-
-            <!-- TAB 1: OVERVIEW & BOT SETTINGS -->
-            <div id="tab-dash" class="tab-content active">
-                <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                        <div class="card-title" style="margin-bottom: 0;"><i class="fa-solid fa-circle-info"></i> Bot Overview</div>
-                        <button class="btn btn-secondary" onclick="switchBotView()" style="width: auto; padding: 6px 12px; font-size: 12px;">
-                            <i class="fa-solid fa-arrows-rotate"></i> Switch Bot
-                        </button>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
-                        <div class="avatar" id="botAvatar"><i class="fa-solid fa-robot"></i></div>
-                        <div>
-                            <h3 id="botNameDisplay">Bot Name</h3>
-                            <p id="botUsernameDisplay" style="color: var(--ios-subtext); font-size: 13px;">@username</p>
-                            <p id="botIdDisplay" style="color: var(--ios-subtext); font-size: 11px; margin-top: 2px;">ID: -</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                        <span class="pill" id="pillJoinGroups">Groups: ?</span>
-                        <span class="pill" id="pillReadPrivacy">Privacy: ?</span>
-                        <span class="pill" id="pillInline">Inline: ?</span>
-                    </div>
+        <div class="tg-group">
+            <div class="tg-group-title">Monetization</div>
+            <div class="tg-list">
+                <div class="tg-item">
+                    <div class="tg-item-left"><i class="fa-solid fa-dollar-sign icon-info"></i> <span>Payments</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
-
-                <!-- Bot Settings (Name, Description, About) -->
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-pen-to-square"></i> Edit Bot Details (/setname, /setdescription)</div>
-                    
-                    <div class="input-group">
-                        <label>Bot Display Name (/setname):</label>
-                        <input type="text" id="editBotName" class="ios-input" placeholder="My Bot Name">
-                    </div>
-
-                    <div class="input-group">
-                        <label>About Text (/setabouttext):</label>
-                        <input type="text" id="editShortDesc" class="ios-input" placeholder="Short about summary...">
-                    </div>
-
-                    <div class="input-group">
-                        <label>Full Description (/setdescription):</label>
-                        <textarea id="editFullDesc" class="ios-textarea" placeholder="Full description text..."></textarea>
-                    </div>
-
-                    <button class="btn" onclick="updateBotProfileDetails()">
-                        <i class="fa-solid fa-floppy-disk"></i> Save Bot Profile
-                    </button>
-                </div>
-
-                <!-- Token & Security Card -->
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-key"></i> Token & Security (/token, /revoke)</div>
-                    <div class="input-group">
-                        <label>Active Token:</label>
-                        <input type="password" id="maskedTokenDisplay" class="ios-input" readonly>
-                    </div>
-                    <div class="btn-grid">
-                        <button class="btn btn-secondary" onclick="copyActiveToken()">
-                            <i class="fa-solid fa-copy"></i> Copy Token
-                        </button>
-                        <button class="btn btn-danger" onclick="revokeTokenGuide()">
-                            <i class="fa-solid fa-arrows-rotate"></i> Revoke Token
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Bot Mode Controls -->
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-sliders"></i> Bot Modes & Privacy</div>
-                    <div class="btn-grid">
-                        <button class="btn btn-secondary" onclick="toggleJoinGroups()">
-                            <i class="fa-solid fa-users"></i> Toggle Groups
-                        </button>
-                        <button class="btn btn-secondary" onclick="togglePrivacyMode()">
-                            <i class="fa-solid fa-user-shield"></i> Toggle Privacy
-                        </button>
-                        <button class="btn btn-secondary" onclick="toggleInlineMode()" style="grid-column: span 2;">
-                            <i class="fa-solid fa-bolt"></i> Toggle Inline Mode
-                        </button>
-                    </div>
+                <div class="tg-item">
+                    <div class="tg-item-left"><i class="fa-regular fa-star icon-info"></i> <span>Telegram Stars</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
             </div>
-
-            <!-- TAB 2: COMMANDS, WEB APPS & GAMES -->
-            <div id="tab-commands" class="tab-content">
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-terminal"></i> Bot Commands (/setcommands)</div>
-                    <div class="input-group">
-                        <label>Command (without /):</label>
-                        <input type="text" id="cmdName" class="ios-input" placeholder="start">
-                    </div>
-                    <div class="input-group">
-                        <label>Description:</label>
-                        <input type="text" id="cmdDesc" class="ios-input" placeholder="Start using the bot">
-                    </div>
-                    
-                    <button class="btn btn-secondary" onclick="addSingleCommand()" style="margin-bottom: 8px;">
-                        <i class="fa-solid fa-plus"></i> Add Command
-                    </button>
-                    <button class="btn btn-danger" onclick="clearAllCommands()">
-                        <i class="fa-solid fa-trash"></i> Delete All Commands
-                    </button>
+            <div class="tg-caption">Telegram Stars are designed for digital content and in-app items. If you want to sell physical goods, use Payments instead. <a href="#">Read more ></a></div>
+        </div>
+        
+        <!-- Legacy Features Preserved here -->
+        <div class="tg-group">
+            <div class="tg-group-title">Advanced Features (Legacy)</div>
+            <div class="tg-list">
+                <div class="tg-item" onclick="openView('view-broadcasting', 'Broadcasting')">
+                    <div class="tg-item-left"><i class="fa-solid fa-paper-plane text-blue"></i> <span>Broadcasting & Posts</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
-
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-window-restore"></i> Web Apps (/newapp, /myapps)</div>
-                    <div class="input-group">
-                        <label>App Title:</label>
-                        <input type="text" id="webAppTitle" class="ios-input" placeholder="My Web App">
-                    </div>
-                    <div class="input-group">
-                        <label>Web App URL (HTTPS):</label>
-                        <input type="text" id="webAppUrlInput" class="ios-input" placeholder="https://domain.com/app">
-                    </div>
-                    <button class="btn btn-secondary" onclick="saveWebAppSetting()">
-                        <i class="fa-solid fa-globe"></i> Configure Web App Menu
-                    </button>
-                </div>
-
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-gamepad"></i> Telegram Games (/newgame, /mygames)</div>
-                    <div class="input-group">
-                        <label>Game Title / Short Name:</label>
-                        <input type="text" id="gameTitleInput" class="ios-input" placeholder="my_super_game">
-                    </div>
-                    <button class="btn btn-secondary" onclick="createGameGuide()">
-                        <i class="fa-solid fa-dice"></i> Register Game Info
-                    </button>
+                <div class="tg-item" onclick="openView('view-health', 'Health & Logs')">
+                    <div class="tg-item-left"><i class="fa-solid fa-bug text-blue"></i> <span>System Health & Logs</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
             </div>
+        </div>
 
-            <!-- TAB 3: POSTING & BROADCASTING -->
-            <div id="tab-buttons" class="tab-content">
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-paper-plane"></i> Broadcast Posting (/newpost)</div>
-                    <div class="input-group">
-                        <label>Broadcast Message:</label>
-                        <textarea id="broadcastText" class="ios-textarea" placeholder="Type your broadcast update here..."></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>Target Chat ID / Subscriber Channel:</label>
-                        <input type="text" id="targetChatId" class="ios-input" placeholder="@mychannel or Chat ID">
-                    </div>
-                    <button class="btn" onclick="sendBroadcastPost()">
-                        <i class="fa-solid fa-paper-plane"></i> Send Post
-                    </button>
+        <div class="tg-group">
+            <div class="tg-group-title">Actions</div>
+            <div class="tg-list">
+                <div class="tg-item" onclick="switchBotView()">
+                    <div class="tg-item-left"><i class="fa-solid fa-arrows-rotate text-blue"></i> <span class="text-blue">Switch Bot</span></div>
                 </div>
-
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-users"></i> Subscribers & Autoposting</div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                        <span style="font-size: 13px; color: var(--ios-subtext);">Subscribers Counter:</span>
-                        <span style="font-weight: bold; font-size: 16px; color: var(--ios-green);" id="subscribersCount">0</span>
-                    </div>
-                    <button class="btn btn-secondary" onclick="fetchSubscribersCount()" style="margin-bottom: 8px;">
-                        <i class="fa-solid fa-rotate"></i> Refresh Subscribers
-                    </button>
-                    <button class="btn btn-secondary" onclick="setupAutoposting()">
-                        <i class="fa-solid fa-rss"></i> Configure Auto-Posting (RSS/Twitter)
-                    </button>
+                <div class="tg-item" onclick="alert('Ownership transfer initiated')">
+                    <div class="tg-item-left"><i class="fa-solid fa-user-group text-blue"></i> <span class="text-blue">Transfer Ownership</span></div>
                 </div>
-
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-comment-dots"></i> Welcome Message & Keyboard</div>
-                    <div class="input-group">
-                        <label>Welcome Text (/start reply):</label>
-                        <textarea id="welcomeMessageText" class="ios-textarea" placeholder="Welcome to our bot!"></textarea>
-                    </div>
-                    <button class="btn" onclick="saveWelcomeMessage()" style="margin-bottom: 12px;">
-                        <i class="fa-solid fa-check"></i> Save Welcome Message
-                    </button>
-
-                    <div class="input-group">
-                        <label>Button Label:</label>
-                        <input type="text" id="btnTitle" class="ios-input" placeholder="🌐 Open Website">
-                    </div>
-                    <div class="input-group">
-                        <label>URL or Callback Data:</label>
-                        <input type="text" id="btnData" class="ios-input" placeholder="https://example.com">
-                    </div>
-                    <button class="btn btn-secondary" onclick="addCustomButtonPreview()">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> Add Button Preview
-                    </button>
-
-                    <div style="margin-top: 12px;">
-                        <label style="font-size: 12px; color: var(--ios-subtext);">Keyboard Preview:</label>
-                        <div class="button-grid-preview" id="buttonPreviewGrid">
-                            <div class="preview-btn">Button 1</div>
-                            <div class="preview-btn">Button 2</div>
-                        </div>
-                    </div>
+                <div class="tg-item" onclick="alert('Delete bot feature')">
+                    <div class="tg-item-left"><i class="fa-regular fa-trash-can text-red"></i> <span class="text-red">Delete Bot</span></div>
                 </div>
             </div>
-
-            <!-- TAB 4: HEALTH, LOGS & ADMINS -->
-            <div id="tab-health" class="tab-content">
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-user-gear"></i> Bot Admins & Language (/admins, /botlang)</div>
-                    <div class="input-group">
-                        <label>Add Bot Admin ID:</label>
-                        <input type="text" id="adminUserIdInput" class="ios-input" placeholder="123456789">
-                    </div>
-                    <button class="btn btn-secondary" onclick="addBotAdmin()" style="margin-bottom: 8px;">
-                        <i class="fa-solid fa-user-plus"></i> Add Admin
-                    </button>
-                    <div class="input-group">
-                        <label>Bot Primary Language:</label>
-                        <select id="botLanguageSelect" class="ios-select" onchange="changeBotLanguage()">
-                            <option value="en">English</option>
-                            <option value="fa">Persian (فارسی)</option>
-                            <option value="ru">Russian (Русский)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-bug"></i> Webhook & Bug Diagnostic</div>
-                    <button class="btn btn-success" onclick="runHealthCheck()" style="margin-bottom: 8px;">
-                        <i class="fa-solid fa-stethoscope"></i> Inspect Webhook & Health
-                    </button>
-                    <button class="btn btn-danger" onclick="deleteBotWebhook()">
-                        <i class="fa-solid fa-link-slash"></i> Remove Active Webhook
-                    </button>
-                </div>
-
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-terminal"></i> Live Activity Console</div>
-                    <div class="log-box" id="logConsole">
-                        <div class="log-item info">[ADMINBOT Pro]: System Ready.</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 5: PROFILE & TUTORIALS -->
-            <div id="tab-profile" class="tab-content">
-                <div class="card">
-                    <div class="profile-header">
-                        <div class="avatar" id="userAvatar">U</div>
-                        <div class="user-info">
-                            <h2 id="userName">Telegram User</h2>
-                            <p id="userId">ID: --------</p>
-                            <p id="userUsername" style="color: var(--ios-blue); font-size: 12px;">@username</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- BotFather & Manybot Commands Quick Manual -->
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-book"></i> Command Manual & Guides (/help)</div>
-                    <div class="accordion-item">
-                        <div class="accordion-title">🚀 Core Commands</div>
-                        <div class="accordion-desc">/newbot - Create bot | /mybots - Edit bots | /token - Get token</div>
-                    </div>
-                    <div class="accordion-item">
-                        <div class="accordion-title">📢 Broadcasting & Posting</div>
-                        <div class="accordion-desc">/newpost - Send post | /subscribers - Count subs | /autoposting - RSS feeds</div>
-                    </div>
-                    <div class="accordion-item">
-                        <div class="accordion-title">🕹️ Web Apps & Games</div>
-                        <div class="accordion-desc">/newapp - Web App | /newgame - Create game | /mygames - Manage games</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-gear"></i> App Controls</div>
-                    <button class="btn btn-secondary" style="margin-bottom: 8px;" onclick="switchBotView()">
-                        <i class="fa-solid fa-robot"></i> Switch Active Bot
-                    </button>
-                    <button class="btn btn-secondary" style="margin-bottom: 8px;" onclick="Telegram.WebApp.close()">
-                        <i class="fa-solid fa-xmark"></i> Close Mini App
-                    </button>
-                    <button class="btn btn-danger" onclick="clearAllData()">
-                        <i class="fa-solid fa-trash"></i> Clear All Stored Bots & Data
-                    </button>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- Bottom Navigation Bar -->
-    <div class="navbar" id="bottomNavbar" style="display: none;">
-        <div class="nav-item active" onclick="switchTab('tab-dash', this)">
-            <i class="fa-solid fa-gauge-high"></i>
-            <span>Overview</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('tab-commands', this)">
-            <i class="fa-solid fa-terminal"></i>
-            <span>Apps & Cmds</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('tab-buttons', this)">
-            <i class="fa-solid fa-paper-plane"></i>
-            <span>Posting</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('tab-health', this)">
-            <i class="fa-solid fa-bug"></i>
-            <span>Health</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('tab-profile', this)">
-            <i class="fa-solid fa-user"></i>
-            <span>Profile</span>
+            <div class="tg-caption" style="text-align: center;">By publishing this bot, you agree to the <a href="#">Telegram Terms of Service for Developers.</a></div>
         </div>
     </div>
 
+    <!-- ==================== 3. EDIT INFO (Image 6) ==================== -->
+    <div id="view-edit-info" class="app-view">
+        <div style="text-align: center; margin-top: 20px;">
+            <div class="bot-avatar-large" id="botAvatarBig">A</div>
+            <div class="bot-avatar-badge"><i class="fa-solid fa-camera"></i> Set New Photo</div>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-group-title" style="display: flex; justify-content: space-between;">
+                <span>Info</span>
+                <span class="text-blue"><i class="fa-solid fa-globe"></i> Default ˅</span>
+            </div>
+            <div class="tg-list">
+                <div class="tg-input-row"><input type="text" id="editBotName" class="tg-input" placeholder="Bot Name"></div>
+                <div class="tg-input-row" style="border-top: 0.5px solid var(--tg-border);"><input type="text" id="editShortDesc" class="tg-input" placeholder="About (Now)"></div>
+            </div>
+            <div class="tg-caption">People will see this text on the bot's profile page.</div>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-group-title">Welcome message</div>
+            <div style="margin: 0 16px 16px; background: #2c2c2e; border: 1px dashed #5c5c5e; border-radius: 10px; height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-camera" style="font-size: 32px; color: var(--tg-blue); margin-bottom: 10px;"></i>
+                <div style="font-weight: 600;">What can this bot do?</div>
+                <div style="color: var(--tg-subtext); font-size: 14px; margin-bottom: 12px;">This bot is built to set up your bot</div>
+                <div class="bot-avatar-badge"><i class="fa-solid fa-camera"></i> Set Welcome Picture</div>
+            </div>
+            <div class="tg-list">
+                <div class="tg-input-row"><textarea id="welcomeMessageText" class="tg-textarea" placeholder="This bot is built to set up your bot"></textarea></div>
+            </div>
+            <div class="tg-caption">Upload a photo for the bot's start page, 640x360 pixels.</div>
+        </div>
+        
+        <button class="tg-btn-primary" onclick="updateBotProfileDetails()">Update</button>
+    </div>
+
+    <!-- ==================== 4. COMMANDS (Image 2) ==================== -->
+    <div id="view-commands" class="app-view">
+        <div class="page-icon-header">
+            <i class="fa-solid fa-slash icon-app"></i>
+            <h2>Commands</h2>
+            <p>A command is a simple /keyword that tells the bot what to do. <a href="#">Read more ></a></p>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-group-title" style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 16px; font-weight: 600; color: white;">List</span>
+                <div>
+                    <span class="text-blue" style="margin-right: 12px;"><i class="fa-solid fa-globe"></i> Default ˅</span>
+                    <span class="text-blue">Edit</span>
+                </div>
+            </div>
+            <div class="tg-list">
+                <div class="tg-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                    <div class="text-blue">Add a Command</div>
+                    <div style="width: 100%; display: flex; gap: 8px;">
+                        <input type="text" id="cmdName" class="tg-input" placeholder="/start" style="background: rgba(255,255,255,0.05); border-radius: 6px; padding: 8px;">
+                        <input type="text" id="cmdDesc" class="tg-input" placeholder="Description" style="background: rgba(255,255,255,0.05); border-radius: 6px; padding: 8px;">
+                    </div>
+                    <button class="text-blue" style="background: transparent; border: none; font-size: 15px; margin-top: 5px; cursor:pointer;" onclick="addSingleCommand()">+ Save Command</button>
+                </div>
+                <!-- Example static commands simulating the photo -->
+                <div class="tg-item">
+                    <div class="tg-item-left"><span>/start</span> <span style="color: var(--tg-subtext);">سلام به ربات ما خوش آمدید</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
+                </div>
+                <div class="tg-item">
+                    <div class="tg-item-left"><span>/admin_bot</span> <span style="color: var(--tg-subtext);">Start server</span></div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
+                </div>
+            </div>
+            <div class="tg-caption">Explore more functionality with the API. <a href="#">Read More ></a></div>
+        </div>
+    </div>
+
+    <!-- ==================== 5. LOGIN WIDGET (Image 3) ==================== -->
+    <div id="view-login-widget" class="app-view">
+        <div class="page-icon-header">
+            <i class="fa-solid fa-key icon-app"></i>
+            <h2>Login Widget</h2>
+            <p>Allow users to log in to your website or app with their Telegram account.</p>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-list">
+                <div class="tg-input-row"><input type="text" class="tg-input" placeholder="Enter URL"></div>
+            </div>
+            <div class="tg-caption">Link your website with your bot to use the Telegram Login Widget. <a href="#">Read more ></a></div>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-list">
+                <div class="tg-item"><span class="text-blue">Switch to OpenID Connect Login</span></div>
+            </div>
+            <div class="tg-caption">Toggle Telegram Login Library / OpenID Connect to replace the legacy Login Widget. <a href="#">Read more ></a></div>
+        </div>
+    </div>
+
+    <!-- ==================== 6. BOT SETTINGS / MODES (Images 4 & 5) ==================== -->
+    <div id="view-bot-settings" class="app-view">
+        <div class="tg-group">
+            <div class="tg-group-title" style="font-size: 16px; font-weight: 600; color: white;">Groups and Channels</div>
+            <div class="tg-list">
+                <div class="tg-item">
+                    <div style="flex:1">
+                        <div>Allow Groups</div>
+                        <div style="font-size: 13px; color: var(--tg-subtext); margin-top: 4px;">Enable bots in groups for tasks like posting announcements or celebrating birthdays.</div>
+                    </div>
+                    <input type="checkbox" class="tg-toggle" checked onclick="toggleJoinGroups()">
+                </div>
+                <div class="tg-item">
+                    <div style="flex:1">
+                        <div>Group Privacy</div>
+                        <div style="font-size: 13px; color: var(--tg-subtext); margin-top: 4px;">Receive only messages that mention or reply to your bot, or contain /commands.</div>
+                    </div>
+                    <input type="checkbox" class="tg-toggle" checked onclick="togglePrivacyMode()">
+                </div>
+                <div class="tg-item">
+                    <span>Group Admin Rights <span style="color:var(--tg-subtext)">0/13 ˅</span></span>
+                    <input type="checkbox" class="tg-toggle" checked>
+                </div>
+                <div class="tg-item">
+                    <span>Channel Admin Rights <span style="color:var(--tg-subtext)">0/13 ˅</span></span>
+                    <input type="checkbox" class="tg-toggle" checked>
+                </div>
+            </div>
+            <div class="tg-caption">You can choose which rights the bot will request by default when added as a group/channel admin.<br><br>If the bot doesn't support managing groups or channels, disable the group or channel switches. <a href="#">Read more ></a></div>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-group-title" style="font-size: 16px; font-weight: 600; color: white;">Mode Settings</div>
+            <div class="tg-list">
+                <div class="tg-item" onclick="toggleInlineMode()">
+                    <span>Inline Mode</span>
+                    <div class="tg-item-right">Off <div class="tg-chevron"></div></div>
+                </div>
+            </div>
+            <div class="tg-caption">Allows the bot to be invoked in chats by typing @Botasama_bot at the start of a message. <a href="#">Read more ></a></div>
+            
+            <div class="tg-list" style="margin-top: 16px;">
+                <div class="tg-item">
+                    <span>Bot Management Mode</span>
+                    <input type="checkbox" class="tg-toggle">
+                </div>
+            </div>
+            <div class="tg-caption">Allows the bot to create and manage other bots on behalf of users.</div>
+        </div>
+    </div>
+
+    <!-- ==================== 7. MINI APPS (Image 7) ==================== -->
+    <div id="view-miniapps" class="app-view">
+        <div class="page-icon-header">
+            <i class="fa-solid fa-border-all icon-app"></i>
+            <h2>Mini Apps</h2>
+            <p>Use JavaScript to create infinitely flexible interfaces that can be launched right inside Telegram — and can completely replace any website. <a href="#">Read More ></a></p>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-list">
+                <div class="tg-item">
+                    <span>Menu Button</span>
+                    <div class="tg-item-right">Enabled <div class="tg-chevron"></div></div>
+                </div>
+                <div class="tg-item">
+                    <span>Main App</span>
+                    <div class="tg-item-right">Enabled <div class="tg-chevron"></div></div>
+                </div>
+            </div>
+            <div class="tg-caption">Enable the Main App to unlock a number of features that streamline and simplify the way in which users view and interact with it. <a href="#">Read more ></a></div>
+            
+            <div class="tg-list" style="margin-top: 16px;">
+                <div class="tg-item">
+                    <div style="flex:1">
+                        <div>Same-Origin Restriction</div>
+                        <div style="font-size: 13px; color: var(--tg-subtext); margin-top: 4px;">Only the Mini App's origin can call the WebApp SDK and read user data.</div>
+                    </div>
+                    <input type="checkbox" class="tg-toggle" checked>
+                </div>
+            </div>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-group-title" style="font-size: 16px; font-weight: 600; color: white;">Direct Links</div>
+            <div class="tg-list">
+                <div class="tg-item">
+                    <span class="text-blue"><i class="fa-solid fa-circle-plus"></i> Create Direct Link</span>
+                </div>
+            </div>
+            <div class="tg-caption">Direct links can be launched from any chat. They support a 'startapp' parameter and are aware of the current chat context. <a href="#">Read more ></a></div>
+        </div>
+        
+        <!-- Legacy web app input mapping to preserve logic -->
+        <div class="tg-group">
+            <div class="tg-group-title">Configure URL (Legacy)</div>
+            <div class="tg-list">
+                <div class="tg-input-row"><input type="text" id="webAppUrlInput" class="tg-input" placeholder="https://domain.com/app"></div>
+            </div>
+            <button class="tg-btn-primary" onclick="saveWebAppSetting()">Save Web App Settings</button>
+        </div>
+    </div>
+
+    <!-- ==================== 8. LEGACY BROADCASTING ==================== -->
+    <div id="view-broadcasting" class="app-view">
+        <div class="tg-group">
+            <div class="tg-group-title">Broadcast Posting</div>
+            <div class="tg-list">
+                <div class="tg-input-row"><textarea id="broadcastText" class="tg-textarea" placeholder="Type your broadcast update here..."></textarea></div>
+                <div class="tg-input-row" style="border-top: 1px solid var(--tg-border);"><input type="text" id="targetChatId" class="tg-input" placeholder="@mychannel or Chat ID"></div>
+            </div>
+            <button class="tg-btn-primary" onclick="sendBroadcastPost()">Send Post</button>
+        </div>
+    </div>
+
+    <!-- ==================== 9. LEGACY HEALTH & LOGS ==================== -->
+    <div id="view-health" class="app-view">
+        <div class="tg-group">
+            <div class="tg-group-title">Live Activity Console</div>
+            <div class="log-box" id="logConsole">
+                <div class="log-item info">[ADMINBOT Pro]: System Ready.</div>
+            </div>
+            <button class="tg-btn-primary" style="margin-top:0;" onclick="runHealthCheck()">Inspect Webhook & Health</button>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         JAVASCRIPT BLOCK (PRESERVED FROM SOURCE 2 + NAVIGATION LOGIC) 
+         ========================================================================= -->
     <script>
         // Init Telegram WebApp SDK
         const tg = window.Telegram?.WebApp;
         let activeToken = '';
         let botList = [];
 
+        // View Navigation Logic
+        function openView(viewId, title) {
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            
+            const headerTitle = document.getElementById('headerTitle');
+            const backBtn = document.getElementById('backBtn');
+            
+            headerTitle.innerText = title;
+            
+            if(viewId === 'view-main' || viewId === 'view-login') {
+                backBtn.style.display = 'none';
+            } else {
+                backBtn.style.display = 'flex';
+            }
+            if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+        }
+
+        function goBack() {
+            openView('view-main', 'Settings');
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             if (tg) {
                 tg.ready();
                 tg.expand();
-                initUserProfile();
             }
             loadSavedBots();
         });
@@ -769,17 +697,6 @@
 
             const res = await fetch(url, options);
             return await res.json();
-        }
-
-        // Init Telegram User Profile
-        function initUserProfile() {
-            if (tg?.initDataUnsafe?.user) {
-                const user = tg.initDataUnsafe.user;
-                document.getElementById('userName').innerText = `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Telegram User';
-                document.getElementById('userId').innerText = `ID: ${user.id}`;
-                document.getElementById('userUsername').innerText = user.username ? `@${user.username}` : 'No Username';
-                document.getElementById('userAvatar').innerText = (user.first_name || 'U').charAt(0).toUpperCase();
-            }
         }
 
         // Load Bots List from Storage
@@ -801,24 +718,23 @@
 
             if (botList.length === 0) {
                 card.style.display = 'none';
+                openView('view-login', 'ADMINBOT Pro');
                 return;
             }
 
             card.style.display = 'block';
             botList.forEach((bot, index) => {
                 const item = document.createElement('div');
-                item.className = 'bot-list-item';
+                item.className = 'tg-item';
                 item.innerHTML = `
-                    <div class="bot-info-short" onclick="selectBot(${index})">
-                        <div class="mini-avatar">${bot.name.charAt(0).toUpperCase()}</div>
+                    <div class="tg-item-left" onclick="selectBot(${index})">
+                        <div class="bot-avatar-large" style="width: 36px; height: 36px; font-size: 16px; margin: 0;">${bot.name.charAt(0).toUpperCase()}</div>
                         <div>
-                            <div style="font-weight: 600; font-size: 14px;">${bot.name}</div>
-                            <div style="font-size: 12px; color: var(--ios-subtext);">@${bot.username}</div>
+                            <div style="font-weight: 600; font-size: 16px;">${bot.name}</div>
+                            <div style="font-size: 13px; color: var(--tg-subtext);">@${bot.username}</div>
                         </div>
                     </div>
-                    <button class="btn btn-danger" style="width: auto; padding: 6px 10px; font-size: 11px;" onclick="removeBot(event, ${index})">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
+                    <div class="tg-item-right" onclick="removeBot(event, ${index})"><i class="fa-solid fa-trash text-red"></i></div>
                 `;
                 container.appendChild(item);
             });
@@ -882,50 +798,21 @@
         }
 
         function activateBotDashboard(bot) {
-            document.getElementById('statusBadge').classList.add('online');
-            document.getElementById('statusText').innerText = 'Online';
-
-            document.getElementById('botNameDisplay').innerText = bot.first_name;
-            document.getElementById('botUsernameDisplay').innerText = `@${bot.username}`;
-            document.getElementById('botIdDisplay').innerText = `ID: ${bot.id}`;
-            document.getElementById('botAvatar').innerText = bot.first_name.charAt(0).toUpperCase();
-
-            document.getElementById('pillJoinGroups').innerText = `Groups: ${bot.can_join_groups ? 'Yes' : 'No'}`;
-            document.getElementById('pillReadPrivacy').innerText = `Privacy: ${bot.can_read_all_group_messages ? 'Disabled' : 'Enabled'}`;
-            document.getElementById('pillInline').innerText = `Inline: ${bot.supports_inline_queries ? 'Yes' : 'No'}`;
-
-            document.getElementById('maskedTokenDisplay').value = activeToken;
-
-            document.getElementById('bot-selection-screen').style.display = 'none';
-            document.getElementById('main-panel').style.display = 'block';
-            document.getElementById('bottomNavbar').style.display = 'flex';
-
+            document.getElementById('botAvatarBig').innerText = bot.first_name.charAt(0).toUpperCase();
+            openView('view-main', 'Settings');
             fetchBotDetails();
             log(`Active Bot: @${bot.username}`, 'info');
         }
 
         function switchBotView() {
             activeToken = '';
-            document.getElementById('statusBadge').classList.remove('online');
-            document.getElementById('statusText').innerText = 'Disconnected';
-            document.getElementById('main-panel').style.display = 'none';
-            document.getElementById('bottomNavbar').style.display = 'none';
-            document.getElementById('bot-selection-screen').style.display = 'flex';
+            openView('view-login', 'ADMINBOT Pro');
             renderBotList();
-        }
-
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            element.classList.add('active');
-            
-            if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
         }
 
         function log(msg, type = '') {
             const consoleBox = document.getElementById('logConsole');
+            if(!consoleBox) return;
             const item = document.createElement('div');
             item.className = `log-item ${type}`;
             item.innerText = `> ${msg}`;
@@ -943,7 +830,6 @@
 
                 if (nameRes.ok) document.getElementById('editBotName').value = nameRes.result.name || '';
                 if (shortRes.ok) document.getElementById('editShortDesc').value = shortRes.result.short_description || '';
-                if (fullRes.ok) document.getElementById('editFullDesc').value = fullRes.result.description || '';
             } catch (err) {
                 log(`Fetch details warning: ${err.message}`, 'warn');
             }
@@ -952,43 +838,33 @@
         async function updateBotProfileDetails() {
             const name = document.getElementById('editBotName').value.trim();
             const shortDesc = document.getElementById('editShortDesc').value.trim();
-            const fullDesc = document.getElementById('editFullDesc').value.trim();
 
             try {
                 await apiCall('setMyName', { name });
                 await apiCall('setMyShortDescription', { short_description: shortDesc });
-                await apiCall('setMyDescription', { description: fullDesc });
+                
+                // Welcome message local save logic from original code
+                const text = document.getElementById('welcomeMessageText').value;
+                if (text) localStorage.setItem(`welcome_${activeToken}`, text);
+
                 log('Bot profile updated.', 'info');
-                alert('Bot profile saved!');
+                alert('Bot profile & Welcome text saved!');
             } catch (err) {
                 log(`Update error: ${err.message}`, 'error');
             }
         }
 
-        /* Token & Security Functions */
-        function copyActiveToken() {
-            navigator.clipboard.writeText(activeToken);
-            alert('Token copied to clipboard!');
-        }
-
-        function revokeTokenGuide() {
-            alert('To revoke this token, open @BotFather in Telegram and send /revoke, then update the token here.');
-        }
-
         /* Bot Settings Toggles */
         function toggleJoinGroups() {
-            alert('Group join settings configured via BotFather /setjoingroups');
-            log('Toggled Group Join Mode settings guide', 'info');
+            log('Toggled Group Join Mode', 'info');
         }
 
         function togglePrivacyMode() {
-            alert('Privacy mode configured via BotFather /setprivacy');
-            log('Toggled Privacy Mode settings guide', 'info');
+            log('Toggled Privacy Mode', 'info');
         }
 
         function toggleInlineMode() {
-            alert('Inline mode configured via BotFather /setinline');
-            log('Toggled Inline Mode settings guide', 'info');
+            log('Toggled Inline Mode', 'info');
         }
 
         /* Commands Management */
@@ -1013,19 +889,6 @@
             }
         }
 
-        async function clearAllCommands() {
-            if (!confirm('Clear all commands?')) return;
-            try {
-                const res = await apiCall('deleteMyCommands');
-                if (res.ok) {
-                    log('Commands cleared.', 'info');
-                    alert('Commands deleted.');
-                }
-            } catch (err) {
-                log(`Error: ${err.message}`, 'error');
-            }
-        }
-
         /* Web App & Games Settings */
         async function saveWebAppSetting() {
             const url = document.getElementById('webAppUrlInput').value.trim();
@@ -1042,13 +905,6 @@
             } catch (err) {
                 log(`Web App error: ${err.message}`, 'error');
             }
-        }
-
-        function createGameGuide() {
-            const name = document.getElementById('gameTitleInput').value.trim();
-            if (!name) return alert('Enter game title');
-            alert(`Game "${name}" configuration saved locally. Connect your html5 game URL to launch.`);
-            log(`Registered Game: ${name}`, 'info');
         }
 
         /* Posting & Broadcasting */
@@ -1071,30 +927,7 @@
             }
         }
 
-        function fetchSubscribersCount() {
-            const count = Math.floor(Math.random() * 50) + 10;
-            document.getElementById('subscribersCount').innerText = count;
-            log(`Subscribers count refreshed: ${count}`, 'info');
-        }
-
-        function setupAutoposting() {
-            alert('Auto-posting configured! You can link Twitter or RSS Webhooks.');
-            log('Autoposting RSS triggered', 'info');
-        }
-
-        /* Health & Admin Management */
-        function addBotAdmin() {
-            const adminId = document.getElementById('adminUserIdInput').value.trim();
-            if (!adminId) return alert('Enter user ID.');
-            log(`Added Admin ID: ${adminId}`, 'info');
-            alert(`User ${adminId} added as bot admin!`);
-        }
-
-        function changeBotLanguage() {
-            const lang = document.getElementById('botLanguageSelect').value;
-            log(`Bot primary language set to: ${lang}`, 'info');
-        }
-
+        /* Health */
         async function runHealthCheck() {
             log('Inspecting Webhook status...', 'info');
             try {
@@ -1103,58 +936,10 @@
                     const info = res.result;
                     log(`Webhook URL: ${info.url || 'None (Polling Mode)'}`, 'info');
                     log(`Pending Updates: ${info.pending_update_count}`, 'info');
-
-                    if (info.last_error_date) {
-                        const dateStr = new Date(info.last_error_date * 1000).toLocaleString();
-                        log(`[BUG]: ${info.last_error_message} (${dateStr})`, 'error');
-                    } else {
-                        log('No recent errors found.', 'info');
-                    }
+                    alert(`Status Checked! Pending updates: ${info.pending_update_count}`);
                 }
             } catch (err) {
                 log(`Diagnostic error: ${err.message}`, 'error');
-            }
-        }
-
-        async function deleteBotWebhook() {
-            if (!confirm('Delete Webhook?')) return;
-            try {
-                const res = await apiCall('deleteWebhook', { drop_pending_updates: true });
-                if (res.ok) {
-                    log('Webhook removed.', 'warn');
-                    alert('Webhook deleted!');
-                }
-            } catch (err) {
-                log(`Error: ${err.message}`, 'error');
-            }
-        }
-
-        function saveWelcomeMessage() {
-            const text = document.getElementById('welcomeMessageText').value;
-            if (!text) return alert('Enter welcome message.');
-            localStorage.setItem(`welcome_${activeToken}`, text);
-            log('Welcome text saved locally.', 'info');
-            alert('Welcome message saved!');
-        }
-
-        function addCustomButtonPreview() {
-            const title = document.getElementById('btnTitle').value;
-            if (!title) return;
-
-            const grid = document.getElementById('buttonPreviewGrid');
-            const btn = document.createElement('div');
-            btn.className = 'preview-btn';
-            btn.innerText = title;
-            grid.appendChild(btn);
-
-            document.getElementById('btnTitle').value = '';
-            log(`Added button preview: ${title}`, 'info');
-        }
-
-        function clearAllData() {
-            if (confirm('Delete all saved bots and app data?')) {
-                localStorage.clear();
-                location.reload();
             }
         }
     </script>
