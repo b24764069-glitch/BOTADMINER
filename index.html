@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" id="htmlRoot">
+<html lang="en" dir="ltr" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -41,7 +41,6 @@
             padding-bottom: 120px;
         }
 
-        /* 📱 Telegram iOS Header */
         .tg-header {
             background: rgba(17, 24, 39, 0.85);
             backdrop-filter: blur(25px);
@@ -68,7 +67,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Language Selector in Header */
         .lang-selector-box {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--tg-border);
@@ -81,7 +79,6 @@
             z-index: 1010;
         }
 
-        /* 📋 Telegram Grouped Lists */
         .tg-group {
             margin-top: 24px;
             margin-bottom: 24px;
@@ -131,7 +128,6 @@
             flex: 1;
         }
 
-        /* Custom Section Logo Icons Container */
         .section-icon-badge {
             width: 38px;
             height: 38px;
@@ -184,7 +180,6 @@
             font-weight: 500;
         }
 
-        /* 🎛️ Inputs & Textareas */
         .tg-input-row {
             background: var(--tg-card);
             padding: 0;
@@ -218,7 +213,6 @@
             min-height: 100px;
         }
 
-        /* 🔘 Toggle Switch */
         .tg-toggle {
             appearance: none;
             width: 50px;
@@ -258,7 +252,6 @@
             transform: translateX(-20px);
         }
 
-        /* 🔵 Squircle Buttons */
         .tg-btn-primary {
             background: linear-gradient(135deg, var(--tg-indigo), var(--tg-blue));
             color: white;
@@ -282,7 +275,6 @@
         .text-red { color: var(--tg-red) !important; }
         .text-cyan { color: var(--tg-cyan) !important; }
 
-        /* Centralized Luxury Header matching Photo 3 */
         .central-status-header {
             display: flex;
             flex-direction: column;
@@ -325,7 +317,6 @@
             font-weight: 500;
         }
 
-        /* Token Box Container (Photo 3 Style) */
         .token-box-wrapper {
             width: 100%;
             max-width: 420px;
@@ -341,7 +332,6 @@
             padding: 0 16px;
         }
 
-        /* Bot & User Avatar UI */
         .bot-avatar-large {
             width: 84px;
             height: 84px;
@@ -374,7 +364,6 @@
             background: rgba(255,255,255,0.15);
         }
 
-        /* Log Box */
         .log-box {
             background: #000000;
             border-radius: var(--squircle-radius);
@@ -390,7 +379,6 @@
             text-align: left;
         }
 
-        /* View Manager */
         .app-view { display: none; }
         .app-view.active { display: block; }
         
@@ -402,7 +390,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* 🔻 Bottom Center Back Button Container */
         .bottom-back-container {
             position: fixed;
             bottom: 25px;
@@ -446,7 +433,6 @@
             font-size: 15px;
         }
 
-        /* Page Headers */
         .page-icon-header {
             text-align: center;
             padding: 24px 16px 16px;
@@ -476,11 +462,10 @@
 </head>
 <body>
 
-    <!-- Global Header with Comprehensive Language Switcher -->
     <div class="tg-header" id="mainHeader">
         <select id="appLangSelect" class="lang-selector-box" onchange="changeAppLanguage(this.value)">
-            <option value="fa" selected>🇮🇷 فارسی</option>
-            <option value="en">🇬🇧 English</option>
+            <option value="en" selected>🇬🇧 English</option>
+            <option value="fa">🇮🇷 فارسی</option>
             <option value="ar">🇸🇦 العربية</option>
             <option value="tr">🇹🇷 Türkçe</option>
             <option value="fr">🇫🇷 Français</option>
@@ -493,7 +478,6 @@
         <div style="width: 40px;"></div>
     </div>
 
-    <!-- ==================== 1. LOGIN / BOT SELECTION ==================== -->
     <div id="view-login" class="app-view active">
         <div class="central-status-header">
             <div class="master-logo-container" id="dashboardLogoContainer">
@@ -530,104 +514,98 @@
                 </div>
             </div>
             <div class="token-action-buttons">
-                <button class="tg-btn-primary" style="margin: 0; flex: 1; background: linear-gradient(135deg, #2563eb, #3b82f6);" onclick="copyBotToken()">کپی توکن</button>
-                <button class="tg-btn-primary" style="margin: 0; flex: 1; background: linear-gradient(135deg, #dc2626, #ef4444);" onclick="revokeBotToken()">ابطال توکن</button>
+                <button class="tg-btn-primary" style="margin: 0; flex: 1; background: linear-gradient(135deg, #2563eb, #3b82f6);" onclick="copyBotToken()">Copy Token</button>
+                <button class="tg-btn-primary" style="margin: 0; flex: 1; background: linear-gradient(135deg, #dc2626, #ef4444);" onclick="revokeBotToken()">Revoke Token</button>
             </div>
         </div>
 
         <div class="tg-group" id="savedBotsCard" style="display: none;">
-            <div class="tg-group-title" data-i18n="saved_bots">ربات‌های ذخیره‌شده</div>
+            <div class="tg-group-title" data-i18n="saved_bots">Saved Bots</div>
             <div class="tg-list" id="savedBotsContainer"></div>
         </div>
 
         <div class="tg-group">
-            <div class="tg-group-title" data-i18n="add_new_bot">افزودن ربات جدید (حالت امن)</div>
+            <div class="tg-group-title" data-i18n="add_new_bot">Add New Bot (Secure Mode)</div>
             <div class="tg-list">
                 <div class="tg-input-row">
-                    <input type="password" id="newBotTokenInput" class="tg-input" placeholder="توکن API ربات (از ربات BotFather)">
+                    <input type="password" id="newBotTokenInput" class="tg-input" placeholder="Bot API Token (from BotFather)">
                 </div>
             </div>
-            <button class="tg-btn-primary" onclick="addNewBot()" data-i18n="connect_bot">اتصال و امن‌سازی ربات</button>
+            <button class="tg-btn-primary" onclick="addNewBot()" data-i18n="connect_bot">Connect & Secure Bot</button>
         </div>
         
         <div class="creator-footer">Designed & Developed by Arsham</div>
     </div>
 
-    <!-- ==================== 2. MAIN SETTINGS MENU ==================== -->
     <div id="view-main" class="app-view">
-        
-        <!-- 2️⃣ مدیریت هوشمند (Smart Management) -->
         <div class="tg-group">
-            <div class="tg-group-title">2️⃣ مدیریت هوشمند</div>
+            <div class="tg-group-title">2. Smart Management</div>
             <div class="tg-list">
-                <div class="tg-item" onclick="openView('view-ai-builder', 'دستیار هوش مصنوعی')">
+                <div class="tg-item" onclick="openView('view-ai-builder', 'AI Assistant')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge"><i class="fa-solid fa-robot text-cyan"></i></div>
-                        <span>دستیار هوش مصنوعی برای ساخت خودکار</span>
+                        <span>AI Assistant for Auto-Building</span>
                     </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
-                <div class="tg-item" onclick="openView('view-dashboard', 'داشبورد و آمار')">
+                <div class="tg-item" onclick="openView('view-dashboard', 'Dashboard & Stats')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge"><i class="fa-solid fa-chart-pie text-blue"></i></div>
-                        <span>داشبورد برای دیدن همه ربات‌ها و آمار پیام‌ها</span>
+                        <span>Dashboard for All Bots & Message Stats</span>
                     </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
             </div>
         </div>
 
-        <!-- 3️⃣ ویژگی‌های پیشرفته (Advanced Features) -->
         <div class="tg-group">
-            <div class="tg-group-title">3️⃣ ویژگی‌های پیشرفته</div>
+            <div class="tg-group-title">3. Advanced Features</div>
             <div class="tg-list">
-                <div class="tg-item" onclick="openView('view-monetization', 'کسب درآمد و پلن‌ها')">
+                <div class="tg-item" onclick="openView('view-monetization', 'Monetization & Plans')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge"><i class="fa-solid fa-sack-dollar text-green"></i></div>
-                        <span>کسب درآمد از ربات و نسخه رایگان/پرو</span>
+                        <span>Bot Monetization & Free/Pro Plans</span>
                     </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
-                <div class="tg-item" onclick="openView('view-templates', 'تمپلیت‌های آماده')">
+                <div class="tg-item" onclick="openView('view-templates', 'Ready Templates')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge"><i class="fa-solid fa-layer-group text-blue"></i></div>
-                        <span>تمپلیت‌های آماده برای هر کاری</span>
+                        <span>Ready Templates for Any Use Case</span>
                     </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
-                <div class="tg-item" onclick="openView('view-integrations', 'اتصال به سرویس‌ها')">
+                <div class="tg-item" onclick="openView('view-integrations', 'Integrations')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge"><i class="fa-solid fa-plug text-cyan"></i></div>
-                        <span>اتصال به سرویس‌های دیگه و چندزبانه خودکار</span>
+                        <span>External Integrations & Auto-Translation</span>
                     </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
-                <!-- 🎵 تولید موسیقی و 🎬 ساخت ویدیو -->
-                <div class="tg-item" onclick="openView('view-ai-media-studio', 'استودیو رسانه هوشمند')">
+                <div class="tg-item" onclick="openView('view-ai-media-studio', 'Smart Media Studio')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge"><i class="fa-solid fa-wand-magic-sparkles text-blue"></i></div>
-                        <span class="text-blue">تولید محتوا، تصویر، موسیقی و ویدیو هوشمند</span>
+                        <span class="text-blue">Smart Content, Image, Music & Video Generation</span>
                     </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
             </div>
         </div>
 
-        <!-- 4️⃣ راحتی کاربر (User Support & Guide) -->
         <div class="tg-group">
-            <div class="tg-group-title">4️⃣ راحتی کاربر و پشتیبانی</div>
+            <div class="tg-group-title">4. User Support & Guide</div>
             <div class="tg-list">
-                <div class="tg-item" onclick="openView('view-support-guide', 'راهنما و پشتیبانی')">
+                <div class="tg-item" onclick="openView('view-support-guide', 'Support & Guide')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge"><i class="fa-solid fa-headset text-blue"></i></div>
-                        <span>ویدیو آموزشی، پشتیبانی زنده و انجمن کاربران</span>
+                        <span>Video Tutorials, Live Support & User Community</span>
                     </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
-                <div class="tg-item" onclick="openView('view-gifts', 'مستندات و هدایای جدید')">
+                <div class="tg-item" onclick="openView('view-gifts', 'Documentation & Gifts')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge"><i class="fa-solid fa-gift text-cyan"></i></div>
-                        <span>مستندات کامل و هدیه برای کاربرای جدید</span>
+                        <span>Full Documentation & New User Gifts</span>
                     </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
@@ -766,73 +744,71 @@
         <div class="creator-footer">Created by Arsham</div>
     </div>
 
-    <!-- ==================== NEW FEATURE VIEWS ==================== -->
-    
     <div id="view-ai-builder" class="app-view">
         <div class="page-icon-header">
-            <h2>دستیار هوش مصنوعی (🤖)</h2>
-            <p>ساخت خودکار ربات، تولید محتوا و پاسخگویی هوشمند.</p>
+            <h2>AI Assistant (🤖)</h2>
+            <p>Automated bot building, content generation, and smart response handling.</p>
         </div>
         <div class="tg-group">
             <div class="tg-list">
                 <div class="tg-input-row">
-                    <textarea class="tg-textarea" placeholder="ایده ربات خود را بنویسید تا هوش مصنوعی آن را پیاده‌سازی کند..."></textarea>
+                    <textarea class="tg-textarea" placeholder="Write your bot idea for the AI to implement..."></textarea>
                 </div>
             </div>
-            <button class="tg-btn-primary" onclick="alert('ساخت ربات با هوش مصنوعی آغاز شد!')">تولید خودکار ربات</button>
+            <button class="tg-btn-primary" onclick="alert('AI bot building started!')">Auto-Generate Bot</button>
         </div>
     </div>
 
     <div id="view-dashboard" class="app-view">
         <div class="page-icon-header">
-            <h2>📊 داشبورد و آمار</h2>
-            <p>مدیریت و مشاهده آمار کامل کاربران و پیام‌ها.</p>
+            <h2>📊 Dashboard & Stats</h2>
+            <p>Manage and view comprehensive user and message statistics.</p>
         </div>
         <div class="tg-group">
             <div class="tg-list" style="padding: 16px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span>کل کاربران:</span> <b class="text-blue">۱,۴۲۰ نفر</b></div>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span>پیام‌های ارسالی امروز:</span> <b class="text-green">۸,۵۴۰ پیام</b></div>
-                <div style="display: flex; justify-content: space-between;"><span>ربات‌های فعال:</span> <b class="text-cyan">۳ ربات</b></div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span>Total Users:</span> <b class="text-blue">1,420</b></div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;"><span>Messages Today:</span> <b class="text-green">8,540</b></div>
+                <div style="display: flex; justify-content: space-between;"><span>Active Bots:</span> <b class="text-cyan">3 Bots</b></div>
             </div>
         </div>
     </div>
 
     <div id="view-monetization" class="app-view">
         <div class="page-icon-header">
-            <h2>💎 نسخه رایگان و پرو (💰 کسب درآمد)</h2>
-            <p>ارتقای ربات به نسخه پرو و فعال‌سازی سیستم درآمدزایی.</p>
+            <h2>💎 Free & Pro Plans (💰 Monetization)</h2>
+            <p>Upgrade bot to Pro version and enable monetization systems.</p>
         </div>
         <div class="tg-group">
             <div class="tg-list" style="padding: 16px; text-align: center;">
-                <h3 style="margin-bottom: 10px;">نسخه فعلی: <span class="text-cyan">رایگان (Free)</span></h3>
-                <p style="color: var(--tg-subtext); font-size: 14px; margin-bottom: 15px;">با ارتقا به نسخه پرو، محدودیت‌ها برداشته شده و درگاه درآمدی فعال می‌شود.</p>
-                <button class="tg-btn-primary" style="margin: 0;" onclick="alert('ارتقا به نسخه پرو با موفقیت انجام شد!')">ارتقا به نسخه پرو (Pro)</button>
+                <h3 style="margin-bottom: 10px;">Current Version: <span class="text-cyan">Free</span></h3>
+                <p style="color: var(--tg-subtext); font-size: 14px; margin-bottom: 15px;">Upgrading to Pro removes limits and activates the revenue gateway.</p>
+                <button class="tg-btn-primary" style="margin: 0;" onclick="alert('Successfully upgraded to Pro!')">Upgrade to Pro Version</button>
             </div>
         </div>
     </div>
 
     <div id="view-templates" class="app-view">
         <div class="page-icon-header">
-            <h2>🎨 تمپلیت‌های آماده</h2>
-            <p>انتخاب قالب آماده برای فروشگاهی، خدماتی، سرگرمی و غیره.</p>
+            <h2>🎨 Ready Templates</h2>
+            <p>Choose pre-made layouts for store, services, entertainment, etc.</p>
         </div>
         <div class="tg-group">
             <div class="tg-list">
-                <div class="tg-item"><span>🛍️ فروشگاه آنلاین فایل و کالا</span><div class="tg-chevron"></div></div>
-                <div class="tg-item"><span>🎬 ربات دانلودر فیلم و موزیک</span><div class="tg-chevron"></div></div>
-                <div class="tg-item"><span>👥 ربات پشتیبانی و تیکتینگ</span><div class="tg-chevron"></div></div>
+                <div class="tg-item"><span>🛍️ Online Digital & Physical Store</span><div class="tg-chevron"></div></div>
+                <div class="tg-item"><span>🎬 Movie & Music Downloader Bot</span><div class="tg-chevron"></div></div>
+                <div class="tg-item"><span>👥 Support & Ticketing Bot</span><div class="tg-chevron"></div></div>
             </div>
         </div>
     </div>
 
     <div id="view-integrations" class="app-view">
         <div class="page-icon-header">
-            <h2>🔌 اتصال به سرویس‌ها و چندزبانه خودکار</h2>
-            <p>اتصال به وب‌سرویس‌های خارجی و ترجمه خودکار پیام‌ها.</p>
+            <h2>🔌 Integrations & Auto-Translation</h2>
+            <p>Connect to external web services and automatic message translation.</p>
         </div>
         <div class="tg-group">
             <div class="tg-list">
-                <div class="tg-item"><span>🌐 ترجمه خودکار زبان‌ها (فعال)</span><input type="checkbox" class="tg-toggle" checked></div>
+                <div class="tg-item"><span>🌐 Auto-Language Translation (Active)</span><input type="checkbox" class="tg-toggle" checked></div>
                 <div class="tg-input-row" style="border-top: 1px solid var(--tg-border);"><input type="text" class="tg-input" placeholder="Webhook API URL..."></div>
             </div>
         </div>
@@ -840,47 +816,46 @@
 
     <div id="view-ai-media-studio" class="app-view">
         <div class="page-icon-header">
-            <h2>🎵 موسیقی، 🎬 ویدیو، 🖼️ تصویر و ✍️ محتوا</h2>
-            <p>ابزارهای هوش مصنوعی پیشرفته برای تولید محتوای چندرسانه‌ای.</p>
+            <h2>🎵 Music, 🎬 Video, 🖼️ Image & ✍️ Content</h2>
+            <p>Advanced AI tools for multimedia content generation.</p>
         </div>
         <div class="tg-group">
             <div class="tg-list">
-                <div class="tg-item" onclick="alert('بخش تولید محتوای خودکار')"><span>✍️ تولید محتوا خودکار</span><div class="tg-chevron"></div></div>
-                <div class="tg-item" onclick="alert('بخش تولید تصویر')"><span>🖼️ تولید تصویر داخل ربات</span><div class="tg-chevron"></div></div>
-                <div class="tg-item" onclick="alert('بخش ساخت موسیقی')"><span>🎵 تولید موسیقی</span><div class="tg-chevron"></div></div>
-                <div class="tg-item" onclick="alert('بخش ساخت ویدیو')"><span>🎬 ساخت ویدیو</span><div class="tg-chevron"></div></div>
+                <div class="tg-item" onclick="alert('Auto Content Generation section')"><span>✍️ Auto Content Generation</span><div class="tg-chevron"></div></div>
+                <div class="tg-item" onclick="alert('Image Generation section')"><span>🖼️ In-Bot Image Generation</span><div class="tg-chevron"></div></div>
+                <div class="tg-item" onclick="alert('Music Generation section')"><span>🎵 Music Generation</span><div class="tg-chevron"></div></div>
+                <div class="tg-item" onclick="alert('Video Generation section')"><span>🎬 Video Creation</span><div class="tg-chevron"></div></div>
             </div>
         </div>
     </div>
 
     <div id="view-support-guide" class="app-view">
         <div class="page-icon-header">
-            <h2>🎥 ویدیو آموزشی و پشتیبانی</h2>
-            <p>آموزش بخش‌های مختلف، پشتیبانی ۲۴/۷ و انجمن کاربران.</p>
+            <h2>🎥 Video Tutorials & Support</h2>
+            <p>Learn various features, get 24/7 support, and join user community.</p>
         </div>
         <div class="tg-group">
             <div class="tg-list">
-                <div class="tg-item"><span>🎥 مشاهده ویدیوهای آموزشی</span><div class="tg-chevron"></div></div>
-                <div class="tg-item"><span>💬 پشتیبانی زنده ۲۴/۷</span><div class="tg-chevron"></div></div>
-                <div class="tg-item"><span>👥 ورود به انجمن کاربران</span><div class="tg-chevron"></div></div>
+                <div class="tg-item"><span>🎥 Watch Video Tutorials</span><div class="tg-chevron"></div></div>
+                <div class="tg-item"><span>💬 24/7 Live Support</span><div class="tg-chevron"></div></div>
+                <div class="tg-item"><span>👥 Join User Community</span><div class="tg-chevron"></div></div>
             </div>
         </div>
     </div>
 
     <div id="view-gifts" class="app-view">
         <div class="page-icon-header">
-            <h2>📚 مستندات و هدایا</h2>
-            <p>مستندات کامل سیستم و دریافت هدیه برای کاربران جدید.</p>
+            <h2>📚 Documentation & Gifts</h2>
+            <p>Complete system documentation and new user gift claims.</p>
         </div>
         <div class="tg-group">
             <div class="tg-list">
-                <div class="tg-item"><span>📚 مستندات کامل راهنما</span><div class="tg-chevron"></div></div>
-                <div class="tg-item" onclick="alert('هدیه کاربران جدید با موفقیت فعال شد!')"><span class="text-cyan">🎁 دریافت هدیه برای کاربرای جدید</span><div class="tg-chevron"></div></div>
+                <div class="tg-item"><span>📚 Full Documentation Guide</span><div class="tg-chevron"></div></div>
+                <div class="tg-item" onclick="alert('New user gift successfully activated!')"><span class="text-cyan">🎁 Claim New User Gift</span><div class="tg-chevron"></div></div>
             </div>
         </div>
     </div>
 
-    <!-- ==================== EXISTING VIEWS ==================== -->
     <div id="view-edit-info" class="app-view">
         <div class="page-icon-header">
             <h2>Edit Info & Profile</h2>
@@ -988,10 +963,9 @@
         <div class="tg-group"><div class="log-box" id="logConsole"><div class="log-item info">[ADMINBOT Pro]: Ready.</div></div></div>
     </div>
 
-    <!-- Bottom Back Button -->
     <div class="bottom-back-container hidden" id="bottomBackContainer">
         <button class="bottom-back-btn" onclick="goBack()">
-            <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back_menu">بازگشت به منو</span>
+            <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back_menu">Back to Menu</span>
         </button>
     </div>
 
@@ -1001,10 +975,9 @@
         let botList = [];
         let customMenuItems = [];
 
-        // سیستم انتخاب زبان جامع (Language Dictionaries)
         const translations = {
-            fa: { title: "ADMINBOT Pro", back: "بازگشت به منو", saved: "ربات‌های ذخیره‌شده", add_bot: "افزودن ربات جدید" },
             en: { title: "ADMINBOT Pro", back: "Back to Menu", saved: "Saved Bots", add_bot: "Add New Bot" },
+            fa: { title: "ADMINBOT Pro", back: "بازگشت به منو", saved: "ربات‌های ذخیره‌شده", add_bot: "افزودن ربات جدید" },
             ar: { title: "ADMINBOT Pro", back: "العودة للقائمة", saved: "البوتات المحفوظة", add_bot: "إضافة بوت جديد" },
             tr: { title: "ADMINBOT Pro", back: "Menüye Dön", saved: "Kayıtlı Botlar", add_bot: "Yeni Bot Ekle" },
             fr: { title: "ADMINBOT Pro", back: "Retour au menu", saved: "Bots enregistrés", add_bot: "Ajouter un bot" },
@@ -1060,7 +1033,7 @@
                 tg.ready();
                 tg.expand();
             }
-            const savedLang = localStorage.getItem('adminbot_lang') || 'fa';
+            const savedLang = localStorage.getItem('adminbot_lang') || 'en';
             document.getElementById('appLangSelect').value = savedLang;
             changeAppLanguage(savedLang);
             loadSavedBots();
@@ -1120,7 +1093,7 @@
         async function addNewBot() {
             const tokenInput = document.getElementById('newBotTokenInput').value.trim();
             if (!tokenInput || !tokenInput.includes(':')) {
-                alert('لطفاً یک توکن معتبر ربات تلگرام وارد کنید.');
+                alert('Please enter a valid Telegram bot token.');
                 return;
             }
             try {
@@ -1139,7 +1112,7 @@
                 }
             } catch (err) {
                 activeToken = '';
-                alert(`خطا در اتصال: ${err.message}`);
+                alert(`Connection error: ${err.message}`);
             }
         }
 
@@ -1154,7 +1127,7 @@
 
         function removeBot(event, index) {
             event.stopPropagation();
-            if (confirm('آیا از حذف این ربات مطمئن هستید؟')) {
+            if (confirm('Are you sure you want to delete this bot?')) {
                 botList.splice(index, 1);
                 saveBotsToStorage();
                 renderBotList();
@@ -1172,11 +1145,11 @@
         function switchBotView() { openView('view-login', 'ADMINBOT Pro'); renderBotList(); }
         function copyBotToken() {
             navigator.clipboard.writeText(document.getElementById('displayBotToken').value);
-            alert('توکن ربات کپی شد!');
+            alert('Bot token copied!');
         }
-        function revokeBotToken() { alert('درخواست ابطال توکن ثبت شد.'); }
-        function transferBotOwnership() { prompt('نام کاربری مقصد را وارد کنید:'); }
-        function deleteCurrentBot() { if(confirm('حذف ربات؟')) switchBotView(); }
+        function revokeBotToken() { alert('Token revocation request submitted.'); }
+        function transferBotOwnership() { prompt('Enter target username:'); }
+        function deleteCurrentBot() { if(confirm('Delete bot?')) switchBotView(); }
 
         function log(msg, type = '') {
             const consoleBox = document.getElementById('logConsole');
@@ -1188,19 +1161,19 @@
             consoleBox.scrollTop = consoleBox.scrollHeight;
         }
 
-        async function updateBotProfileDetails() { alert('پروفایل به‌روزرسانی شد!'); }
+        async function updateBotProfileDetails() { alert('Profile updated!'); }
         function updateLogoPreview() {}
-        function downloadGeneratedLogo() { alert('لوگو دانلود شد!'); }
-        function handleCustomGifUpload(e) { alert('فایل بارگذاری شد!'); }
-        function handleBotPhotoUpload(e) { alert('آواتار به‌روز شد!'); }
-        function addCustomMenuButton() { alert('دکمه اضافه شد!'); }
-        async function addSingleCommand() { alert('دستور ثبت شد!'); }
-        async function saveWebAppSetting() { alert('تنظیمات مینی‌اپ ذخیره شد!'); }
-        function saveGameConfig() { alert('بازی ذخیره شد!'); }
-        function savePaymentProvider() { alert('درگاه متصل شد!'); }
-        function createStarInvoice() { alert('لینک فاکتور ستاره ایجاد شد!'); }
-        async function sendBroadcastPost() { alert('ارسال همگانی انجام شد!'); }
-        async function runHealthCheck() { alert('وضعیت سرور پایدار است.'); }
+        function downloadGeneratedLogo() { alert('Logo downloaded!'); }
+        function handleCustomGifUpload(e) { alert('File uploaded!'); }
+        function handleBotPhotoUpload(e) { alert('Avatar updated!'); }
+        function addCustomMenuButton() { alert('Button added!'); }
+        async function addSingleCommand() { alert('Command saved!'); }
+        async function saveWebAppSetting() { alert('Mini app settings saved!'); }
+        function saveGameConfig() { alert('Game saved!'); }
+        function savePaymentProvider() { alert('Payment gateway connected!'); }
+        function createStarInvoice() { alert('Star invoice link generated!'); }
+        async function sendBroadcastPost() { alert('Broadcast sent!'); }
+        async function runHealthCheck() { alert('Server status is stable.'); }
     </script>
 </body>
 </html>
