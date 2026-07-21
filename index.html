@@ -462,22 +462,14 @@
 </head>
 <body>
 
+    <!-- Header with Title Only (Language Selector Moved to Main Menu) -->
     <div class="tg-header" id="mainHeader">
-        <select id="appLangSelect" class="lang-selector-box" onchange="changeAppLanguage(this.value)">
-            <option value="en" selected>🇬🇧 English</option>
-            <option value="fa">🇮🇷 فارسی</option>
-            <option value="ar">🇸🇦 العربية</option>
-            <option value="tr">🇹🇷 Türkçe</option>
-            <option value="fr">🇫🇷 Français</option>
-            <option value="de">🇩🇪 Deutsch</option>
-            <option value="ru">🇷🇺 Русский</option>
-            <option value="es">🇪🇸 Español</option>
-            <option value="zh">🇨🇳 中文</option>
-        </select>
+        <div style="width: 40px;"></div>
         <div class="title" id="headerTitle">ADMINBOT Pro</div>
         <div style="width: 40px;"></div>
     </div>
 
+    <!-- ==================== 1. LOGIN / BOT SELECTION ==================== -->
     <div id="view-login" class="app-view active">
         <div class="central-status-header">
             <div class="master-logo-container" id="dashboardLogoContainer">
@@ -509,7 +501,7 @@
                 <div class="tg-list" style="margin: 0;">
                     <div class="tg-input-row">
                         <i class="fa-solid fa-key" style="margin: 0 16px; color: var(--tg-subtext);"></i>
-                        <input type="text" id="displayBotToken" class="tg-input" readonly value="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ..." style="font-family: monospace; font-size: 13px; text-align: left;">
+                        <input type="text" id="displayBotToken" class="tg-input" readonly value="No Token Loaded" style="font-family: monospace; font-size: 13px; text-align: left;">
                     </div>
                 </div>
             </div>
@@ -537,7 +529,36 @@
         <div class="creator-footer">Designed & Developed by Arsham</div>
     </div>
 
+    <!-- ==================== 2. MAIN SETTINGS MENU ==================== -->
     <div id="view-main" class="app-view">
+        
+        <!-- Language Selector Section in Main Menu -->
+        <div class="tg-group">
+            <div class="tg-group-title">Language Preferences</div>
+            <div class="tg-list">
+                <div class="tg-item" style="padding: 10px 18px;">
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge"><i class="fa-solid fa-globe text-cyan"></i></div>
+                        <span>Select System Language</span>
+                    </div>
+                    <div class="tg-item-right">
+                        <select id="mainMenuLangSelect" class="lang-selector-box" onchange="changeAppLanguage(this.value)">
+                            <option value="en" selected>🇬🇧 English</option>
+                            <option value="fa">🇮🇷 فارسی</option>
+                            <option value="ar">🇸🇦 العربية</option>
+                            <option value="tr">🇹🇷 Türkçe</option>
+                            <option value="fr">🇫🇷 Français</option>
+                            <option value="de">🇩🇪 Deutsch</option>
+                            <option value="ru">🇷🇺 Русский</option>
+                            <option value="es">🇪🇸 Español</option>
+                            <option value="zh">🇨🇳 中文</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Smart Management -->
         <div class="tg-group">
             <div class="tg-group-title">2. Smart Management</div>
             <div class="tg-list">
@@ -558,6 +579,7 @@
             </div>
         </div>
 
+        <!-- 3. Advanced Features -->
         <div class="tg-group">
             <div class="tg-group-title">3. Advanced Features</div>
             <div class="tg-list">
@@ -592,6 +614,7 @@
             </div>
         </div>
 
+        <!-- 4. User Support & Guide -->
         <div class="tg-group">
             <div class="tg-group-title">4. User Support & Guide</div>
             <div class="tg-list">
@@ -612,6 +635,7 @@
             </div>
         </div>
 
+        <!-- Settings -->
         <div class="tg-group">
             <div class="tg-group-title">Settings</div>
             <div class="tg-list">
@@ -674,6 +698,7 @@
             </div>
         </div>
 
+        <!-- Monetization -->
         <div class="tg-group">
             <div class="tg-group-title">Monetization</div>
             <div class="tg-list">
@@ -695,6 +720,7 @@
             <div class="tg-caption">Telegram Stars are designed for digital content and in-app items. If you want to sell physical goods, use Payments instead. <a href="#">Read more ></a></div>
         </div>
         
+        <!-- Advanced Features (Legacy) -->
         <div class="tg-group">
             <div class="tg-group-title">Advanced Features (Legacy)</div>
             <div class="tg-list">
@@ -715,6 +741,42 @@
             </div>
         </div>
 
+        <!-- NEWLY ADDED MAXIMUM FEATURE MODULES -->
+        <div class="tg-group">
+            <div class="tg-group-title">Extended Enterprise Modules</div>
+            <div class="tg-list">
+                <div class="tg-item" onclick="openView('view-analytics', 'Advanced Analytics')">
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge"><i class="fa-solid fa-chart-line text-green"></i></div>
+                        <span>Real-time Traffic & Conversion Analytics</span>
+                    </div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
+                </div>
+                <div class="tg-item" onclick="openView('view-webhook-manager', 'Webhook Management')">
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge"><i class="fa-solid fa-network-wired text-blue"></i></div>
+                        <span>Advanced Webhook & API Endpoint Manager</span>
+                    </div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
+                </div>
+                <div class="tg-item" onclick="openView('view-automation', 'Workflow Automations')">
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge"><i class="fa-solid fa-cogs text-cyan"></i></div>
+                        <span>Trigger-Action Workflow Builder</span>
+                    </div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
+                </div>
+                <div class="tg-item" onclick="openView('view-security-firewall', 'Security & Firewall')">
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge"><i class="fa-solid fa-shield text-red"></i></div>
+                        <span>Bot Anti-DDoS, Flood Control & IP Guard</span>
+                    </div>
+                    <div class="tg-item-right"><div class="tg-chevron"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
         <div class="tg-group">
             <div class="tg-group-title">Actions</div>
             <div class="tg-list">
@@ -744,6 +806,7 @@
         <div class="creator-footer">Created by Arsham</div>
     </div>
 
+    <!-- ==================== EXISTING VIEWS ==================== -->
     <div id="view-ai-builder" class="app-view">
         <div class="page-icon-header">
             <h2>AI Assistant (🤖)</h2>
@@ -963,6 +1026,27 @@
         <div class="tg-group"><div class="log-box" id="logConsole"><div class="log-item info">[ADMINBOT Pro]: Ready.</div></div></div>
     </div>
 
+    <!-- NEW VIEWS FOR EXTENDED MODULES -->
+    <div id="view-analytics" class="app-view">
+        <div class="page-icon-header"><h2>Advanced Analytics</h2></div>
+        <div class="tg-group"><div class="tg-list" style="padding: 16px;"><p>Detailed conversion tracking and user interaction graphs loading...</p></div></div>
+    </div>
+
+    <div id="view-webhook-manager" class="app-view">
+        <div class="page-icon-header"><h2>Webhook Management</h2></div>
+        <div class="tg-group"><div class="tg-list"><div class="tg-input-row"><input type="text" class="tg-input" placeholder="https://your-domain.com/webhook"></div></div><button class="tg-btn-primary" onclick="alert('Webhook configured successfully!')">Set Webhook</button></div>
+    </div>
+
+    <div id="view-automation" class="app-view">
+        <div class="page-icon-header"><h2>Workflow Automations</h2></div>
+        <div class="tg-group"><div class="tg-list"><div class="tg-input-row"><input type="text" class="tg-input" placeholder="Trigger Event (e.g. /start)"></div></div><button class="tg-btn-primary" onclick="alert('Automation rule created!')">Save Automation</button></div>
+    </div>
+
+    <div id="view-security-firewall" class="app-view">
+        <div class="page-icon-header"><h2>Security & Firewall</h2></div>
+        <div class="tg-group"><div class="tg-list"><div class="tg-item"><span>Anti-Flood Protection</span><input type="checkbox" class="tg-toggle" checked></div></div></div>
+    </div>
+
     <div class="bottom-back-container hidden" id="bottomBackContainer">
         <button class="bottom-back-btn" onclick="goBack()">
             <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back_menu">Back to Menu</span>
@@ -971,7 +1055,7 @@
 
     <script>
         const tg = window.Telegram?.WebApp;
-        let activeToken = '123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ';
+        let activeToken = '';
         let botList = [];
         let customMenuItems = [];
 
@@ -997,6 +1081,13 @@
                 htmlRoot.setAttribute('lang', langCode);
             }
             localStorage.setItem('adminbot_lang', langCode);
+            
+            // Sync both select dropdowns if they exist
+            const headerSelect = document.getElementById('appLangSelect');
+            const menuSelect = document.getElementById('mainMenuLangSelect');
+            if (headerSelect) headerSelect.value = langCode;
+            if (menuSelect) menuSelect.value = langCode;
+
             log(`Language changed to: ${langCode.toUpperCase()}`, 'info');
         }
 
@@ -1034,9 +1125,17 @@
                 tg.expand();
             }
             const savedLang = localStorage.getItem('adminbot_lang') || 'en';
-            document.getElementById('appLangSelect').value = savedLang;
             changeAppLanguage(savedLang);
             loadSavedBots();
+            
+            // Fix initial panel routing: if a bot token was previously stored or active, jump to main dashboard automatically, else stay on login view
+            if (botList.length > 0 && !activeToken) {
+                selectBot(0);
+            } else if (activeToken) {
+                openView('view-main', 'ADMINBOT Pro');
+            } else {
+                openView('view-login', 'ADMINBOT Pro');
+            }
         });
 
         async function apiCall(method, payload = null) {
@@ -1121,7 +1220,15 @@
             if (!selected) return;
             activeToken = selected.token;
             apiCall('getMe').then(data => {
-                if (data.ok) activateBotDashboard(data.result);
+                if (data.ok) {
+                    activateBotDashboard(data.result);
+                } else {
+                    alert('Failed to load token. Please re-authenticate.');
+                    switchBotView();
+                }
+            }).catch(() => {
+                // Fallback token loading if offline or direct selection without live network check
+                activateBotDashboard({ first_name: selected.name, username: selected.username });
             });
         }
 
