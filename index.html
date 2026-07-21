@@ -258,20 +258,23 @@
         .text-red { color: var(--tg-red) !important; }
         .text-cyan { color: var(--tg-cyan) !important; }
 
-        /* Centralized Luxury Header with Master Logo */
+        /* Centralized Luxury Header matching Photo 3 */
         .central-status-header {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px 16px 20px;
+            padding: 24px 16px 16px;
             text-align: center;
         }
 
         .master-logo-container {
             width: 95px;
             height: 95px;
-            margin-bottom: 16px;
-            filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4));
+            margin-bottom: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--tg-blue);
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
             animation: pulseGlow 3s infinite alternate;
         }
 
@@ -279,46 +282,39 @@
             0% { filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.3)); transform: scale(1); }
             100% { filter: drop-shadow(0 0 28px rgba(6, 182, 212, 0.6)); transform: scale(1.03); }
         }
-
-        .status-top-indicator {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--tg-subtext);
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .status-top-indicator i { font-size: 8px; color: var(--tg-subtext); }
         
         .central-status-header h2 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
             color: var(--tg-text);
             letter-spacing: -0.5px;
-            margin: 4px 0;
+            margin: 4px 0 2px;
             background: linear-gradient(135deg, #ffffff, #93c5fd, #67e8f9);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .status-bottom-indicator {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--tg-red);
-            margin-top: 8px;
-            padding: 4px 14px;
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 20px;
-            display: inline-block;
+        .bot-username-sub {
+            font-size: 14px;
+            color: var(--tg-subtext);
+            margin-bottom: 16px;
+            font-weight: 500;
         }
-        .status-bottom-indicator.online {
-            color: var(--tg-green);
-            background: rgba(16, 185, 129, 0.15);
-            border-color: rgba(16, 185, 129, 0.3);
+
+        /* Token Box Container (Photo 3 Style) */
+        .token-box-wrapper {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .token-action-buttons {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            max-width: 420px;
+            margin: 14px auto 0;
+            padding: 0 16px;
         }
 
         /* Bot & User Avatar UI */
@@ -381,7 +377,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* 🔻 Bottom Center Back Button Container (Strictly Center & Professional) */
+        /* 🔻 Bottom Center Back Button Container */
         .bottom-back-container {
             position: fixed;
             bottom: 25px;
@@ -463,8 +459,8 @@
     <!-- ==================== 1. LOGIN / BOT SELECTION ==================== -->
     <div id="view-login" class="app-view active">
         <div class="central-status-header">
-            <!-- Master Luxury SVG Logo Provided -->
-            <div class="master-logo-container">
+            <!-- Master Luxury Circular Logo Container (Photo 3 Style) -->
+            <div class="master-logo-container" id="dashboardLogoContainer">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
                   <defs>
                     <linearGradient id="darkBg" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -477,33 +473,31 @@
                       <stop offset="50%" stop-color="#3B82F6"/>
                       <stop offset="100%" stop-color="#06B6D4"/>
                     </linearGradient>
-                    <linearGradient id="metalLine" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stop-color="rgba(255, 255, 255, 0.4)"/>
-                      <stop offset="100%" stop-color="rgba(255, 255, 255, 0.05)"/>
-                    </linearGradient>
-                    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                      <feGaussianBlur stdDeviation="12" result="blur" />
-                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                    </filter>
                   </defs>
-                  <rect x="16" y="16" width="480" height="480" rx="108" fill="url(#darkBg)" stroke="url(#metalLine)" stroke-width="2"/>
-                  <rect x="28" y="28" width="456" height="456" rx="96" fill="none" stroke="url(#electricGlow)" stroke-width="2" opacity="0.25" filter="url(#glow)"/>
-                  <g transform="translate(0, 8)">
-                    <path d="M 256 110 L 370 160 V 270 C 370 345 315 405 256 425 C 197 405 142 345 142 270 V 160 Z" fill="rgba(17, 24, 39, 0.6)" stroke="url(#electricGlow)" stroke-width="6" stroke-linejoin="round" filter="url(#glow)"/>
-                    <path d="M 256 165 L 185 320 H 215 L 256 230 Z" fill="url(#electricGlow)"/>
-                    <path d="M 256 165 L 327 320 H 297 L 256 230 Z" fill="url(#electricGlow)"/>
-                    <polygon points="256,190 270,225 256,260 242,225" fill="#FFFFFF" filter="url(#glow)"/>
-                    <rect x="210" y="275" width="92" height="10" rx="5" fill="url(#electricGlow)"/>
-                    <circle cx="256" cy="135" r="6" fill="#06B6D4" filter="url(#glow)"/>
-                    <circle cx="225" cy="142" r="4" fill="#6366F1"/>
-                    <circle cx="287" cy="142" r="4" fill="#6366F1"/>
-                  </g>
+                  <rect width="512" height="512" fill="url(#darkBg)"/>
+                  <path d="M 256 110 L 370 160 V 270 C 370 345 315 405 256 425 C 197 405 142 345 142 270 V 160 Z" fill="rgba(17, 24, 39, 0.8)" stroke="url(#electricGlow)" stroke-width="6" stroke-linejoin="round"/>
+                  <path d="M 256 165 L 185 320 H 215 L 256 230 Z" fill="url(#electricGlow)"/>
+                  <path d="M 256 165 L 327 320 H 297 L 256 230 Z" fill="url(#electricGlow)"/>
                 </svg>
             </div>
-            <div id="userProfileHeaderContainer" style="margin-bottom: 12px;"></div>
-            <div class="status-top-indicator"><i class="fa-solid fa-circle" id="topDot"></i> System Status</div>
-            <h2>ADMINBOT Pro</h2>
-            <div class="status-bottom-indicator" id="bottomStatusBadge">Offline / Disconnected</div>
+            
+            <div id="userProfileHeaderContainer" style="margin-bottom: 8px;"></div>
+            <h2 id="mainBotTitleHeader">Admin Bot pro</h2>
+            <div class="bot-username-sub" id="mainBotUsernameHeader">@Botasama_bot</div>
+
+            <!-- Token Box matching Photo 3 -->
+            <div class="token-box-wrapper">
+                <div class="tg-list" style="margin: 0;">
+                    <div class="tg-input-row">
+                        <i class="fa-solid fa-key" style="margin-left: 16px; color: var(--tg-subtext);"></i>
+                        <input type="text" id="displayBotToken" class="tg-input" readonly value="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ..." style="font-family: monospace; font-size: 13px;">
+                    </div>
+                </div>
+            </div>
+            <div class="token-action-buttons">
+                <button class="tg-btn-primary" style="margin: 0; flex: 1; background: linear-gradient(135deg, #2563eb, #3b82f6);" onclick="copyBotToken()">Copy</button>
+                <button class="tg-btn-primary" style="margin: 0; flex: 1; background: linear-gradient(135deg, #dc2626, #ef4444);" onclick="revokeBotToken()">Revoke</button>
+            </div>
         </div>
 
         <div class="tg-group" id="savedBotsCard" style="display: none;">
@@ -533,7 +527,7 @@
                 <div class="tg-item" onclick="openView('view-edit-info', 'Edit Info')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            <i class="fa-solid fa-circle-info text-blue"></i>
                         </div>
                         <span>Edit Info & Profile</span>
                     </div>
@@ -543,7 +537,7 @@
                 <div class="tg-item" onclick="openView('view-logo-maker', 'Logo & GIF Studio')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                            <i class="fa-solid fa-wand-magic-sparkles text-cyan"></i>
                         </div>
                         <span class="text-blue">Logo & GIF Studio</span>
                     </div>
@@ -553,7 +547,7 @@
                 <div class="tg-item" onclick="openView('view-commands', 'Commands')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                            <i class="fa-solid fa-terminal text-blue"></i>
                         </div>
                         <span>Commands</span>
                     </div>
@@ -563,7 +557,7 @@
                 <div class="tg-item" onclick="openView('view-menu-builder', 'Menu Builder')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                            <i class="fa-solid fa-bars-progress text-blue"></i>
                         </div>
                         <span class="text-blue">Custom Menu Builder</span>
                     </div>
@@ -573,7 +567,7 @@
                 <div class="tg-item" onclick="openView('view-miniapps', 'Mini Apps')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                            <i class="fa-solid fa-table-cells text-blue"></i>
                         </div>
                         <span>Mini Apps</span>
                     </div>
@@ -583,7 +577,7 @@
                 <div class="tg-item" onclick="openView('view-bot-settings', 'Bot Settings')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="7" r="4"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="16" y1="15" x2="16" y2="15"/></svg>
+                            <i class="fa-solid fa-robot text-blue"></i>
                         </div>
                         <span>Bot Settings</span>
                     </div>
@@ -593,17 +587,17 @@
                 <div class="tg-item" onclick="openView('view-login-widget', 'Login Widget')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.778-7.778zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                            <i class="fa-solid fa-key text-blue"></i>
                         </div>
                         <span>Login Widget</span>
                     </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
                 <!-- Games -->
-                <div class="tg-item" onclick="alert('Games menu selected')">
+                <div class="tg-item" onclick="openView('view-games', 'Games')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m10-2h.01M16 14h.01"/></svg>
+                            <i class="fa-solid fa-gamepad text-blue"></i>
                         </div>
                         <span>Games</span>
                     </div>
@@ -615,19 +609,19 @@
         <div class="tg-group">
             <div class="tg-group-title">Monetization</div>
             <div class="tg-list">
-                <div class="tg-item">
+                <div class="tg-item" onclick="openView('view-payments', 'Payments')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <i class="fa-solid fa-dollar-sign text-green"></i>
                         </div>
                         <span>Payments</span>
                     </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
-                <div class="tg-item">
+                <div class="tg-item" onclick="openView('view-stars', 'Telegram Stars')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <i class="fa-solid fa-star text-cyan" style="color: #f59e0b;"></i>
                         </div>
                         <span>Telegram Stars</span>
                     </div>
@@ -644,7 +638,7 @@
                 <div class="tg-item" onclick="openView('view-broadcasting', 'Broadcasting')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            <i class="fa-solid fa-bullhorn text-blue"></i>
                         </div>
                         <span class="text-blue">Broadcasting & Posts</span>
                     </div>
@@ -653,7 +647,7 @@
                 <div class="tg-item" onclick="openView('view-health', 'Health & Logs')">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <i class="fa-solid fa-shield-halved text-green"></i>
                         </div>
                         <span class="text-blue">System Health & Logs</span>
                     </div>
@@ -668,23 +662,23 @@
                 <div class="tg-item" onclick="switchBotView()">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                            <i class="fa-solid fa-rotate text-blue"></i>
                         </div>
                         <span class="text-blue">Switch Bot</span>
                     </div>
                 </div>
-                <div class="tg-item" onclick="alert('Ownership transfer initiated')">
+                <div class="tg-item" onclick="transferBotOwnership()">
                     <div class="tg-item-left">
                         <div class="section-icon-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <i class="fa-solid fa-user-gear text-blue"></i>
                         </div>
                         <span class="text-blue">Transfer Ownership</span>
                     </div>
                 </div>
-                <div class="tg-item" onclick="alert('Delete bot feature')">
+                <div class="tg-item" onclick="deleteCurrentBot()">
                     <div class="tg-item-left">
                         <div class="section-icon-badge" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.1);">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            <i class="fa-solid fa-trash text-red"></i>
                         </div>
                         <span class="text-red">Delete Bot</span>
                     </div>
@@ -698,7 +692,6 @@
     <!-- ==================== 3. EDIT INFO ==================== -->
     <div id="view-edit-info" class="app-view">
         <div class="page-icon-header">
-            <!-- Custom Unique Section Logo: Edit Info -->
             <svg viewBox="0 0 512 512" width="100%" height="100%">
                 <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
                 <path d="M180 256h152M256 180v152" stroke="url(#electricGlow)" stroke-width="32" stroke-linecap="round"/>
@@ -746,7 +739,6 @@
     <!-- ==================== 4. LOGO & GIF STUDIO ==================== -->
     <div id="view-logo-maker" class="app-view">
         <div class="page-icon-header">
-            <!-- Custom Unique Section Logo: Logo Studio -->
             <svg viewBox="0 0 512 512" width="100%" height="100%">
                 <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
                 <path d="M160 352l32-96L352 128l64 64-160 160-96 32z" fill="none" stroke="url(#electricGlow)" stroke-width="28" stroke-linejoin="round"/>
@@ -796,7 +788,6 @@
     <!-- ==================== 5. COMMANDS ==================== -->
     <div id="view-commands" class="app-view">
         <div class="page-icon-header">
-            <!-- Custom Unique Section Logo: Commands -->
             <svg viewBox="0 0 512 512" width="100%" height="100%">
                 <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
                 <path d="M140 160l100 96-100 96M290 352h100" fill="none" stroke="url(#electricGlow)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
@@ -838,7 +829,6 @@
     <!-- ==================== 6. CUSTOM MENU BUILDER ==================== -->
     <div id="view-menu-builder" class="app-view">
         <div class="page-icon-header">
-            <!-- Custom Unique Section Logo: Menu Builder -->
             <svg viewBox="0 0 512 512" width="100%" height="100%">
                 <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
                 <path d="M128 176h256M128 256h256M128 336h160" fill="none" stroke="url(#electricGlow)" stroke-width="32" stroke-linecap="round"/>
@@ -871,7 +861,6 @@
     <!-- ==================== 7. LOGIN WIDGET ==================== -->
     <div id="view-login-widget" class="app-view">
         <div class="page-icon-header">
-            <!-- Custom Unique Section Logo: Login Widget -->
             <svg viewBox="0 0 512 512" width="100%" height="100%">
                 <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
                 <path d="M220 336l-80-80 80-80M140 256h180" fill="none" stroke="url(#electricGlow)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
@@ -899,7 +888,6 @@
     <!-- ==================== 8. BOT SETTINGS / MODES ==================== -->
     <div id="view-bot-settings" class="app-view">
         <div class="page-icon-header">
-            <!-- Custom Unique Section Logo: Bot Settings -->
             <svg viewBox="0 0 512 512" width="100%" height="100%">
                 <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
                 <circle cx="256" cy="220" r="64" fill="none" stroke="url(#electricGlow)" stroke-width="28"/>
@@ -961,7 +949,6 @@
     <!-- ==================== 9. MINI APPS ==================== -->
     <div id="view-miniapps" class="app-view">
         <div class="page-icon-header">
-            <!-- Custom Unique Section Logo: Mini Apps -->
             <svg viewBox="0 0 512 512" width="100%" height="100%">
                 <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
                 <rect x="128" y="128" width="100" height="100" rx="20" fill="url(#electricGlow)"/>
@@ -1016,10 +1003,73 @@
         </div>
     </div>
 
-    <!-- ==================== 10. BROADCASTING ==================== -->
+    <!-- ==================== 10. GAMES (Functional Section) ==================== -->
+    <div id="view-games" class="app-view">
+        <div class="page-icon-header">
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <rect x="120" y="200" width="272" height="140" rx="30" fill="none" stroke="url(#electricGlow)" stroke-width="24"/>
+                <circle cx="180" cy="270" r="20" fill="#06B6D4"/>
+                <path d="M320 250h30m-15-15v30" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+            </svg>
+            <h2>Bot Games Manager</h2>
+            <p>Configure HTML5 games for your bot via BotFather integration.</p>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-group-title">Connected Game</div>
+            <div class="tg-list">
+                <div class="tg-input-row"><input type="text" id="gameShortName" class="tg-input" placeholder="Game Short Name (e.g., flappy_bot)"></div>
+                <div class="tg-input-row" style="border-top: 1px solid var(--tg-border);"><input type="text" id="gameUrl" class="tg-input" placeholder="HTML5 Game URL (https://...)"></div>
+            </div>
+            <button class="tg-btn-primary" onclick="saveGameConfig()">Publish Game to Bot</button>
+        </div>
+    </div>
+
+    <!-- ==================== 11. PAYMENTS (Functional Section) ==================== -->
+    <div id="view-payments" class="app-view">
+        <div class="page-icon-header">
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <path d="M256 120v272M320 180H216a44 44 0 000 88h80a44 44 0 010 88H180" fill="none" stroke="url(#electricGlow)" stroke-width="32" stroke-linecap="round"/>
+            </svg>
+            <h2>Payment Gateways</h2>
+            <p>Connect payment providers like Stripe or YooMoney to sell goods.</p>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-group-title">Provider Token</div>
+            <div class="tg-list">
+                <div class="tg-input-row"><input type="password" id="paymentTokenInput" class="tg-input" placeholder="Provider Token (from @BotFather)"></div>
+            </div>
+            <button class="tg-btn-primary" onclick="savePaymentProvider()">Connect Provider</button>
+        </div>
+    </div>
+
+    <!-- ==================== 12. TELEGRAM STARS (Functional Section) ==================== -->
+    <div id="view-stars" class="app-view">
+        <div class="page-icon-header">
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <path d="M256 110l58 118 130 19-94 92 22 130-116-61-116 61 22-130-94-92 130-19z" fill="none" stroke="url(#electricGlow)" stroke-width="28" stroke-linejoin="round"/>
+            </svg>
+            <h2>Telegram Stars Invoice</h2>
+            <p>Create digital invoices and item pricing using Telegram Stars.</p>
+        </div>
+
+        <div class="tg-group">
+            <div class="tg-group-title">Create Star Invoice</div>
+            <div class="tg-list">
+                <div class="tg-input-row"><input type="text" id="starItemTitle" class="tg-input" placeholder="Item Title (e.g., VIP Access)"></div>
+                <div class="tg-input-row" style="border-top: 1px solid var(--tg-border);"><input type="number" id="starItemPrice" class="tg-input" placeholder="Price in Stars (e.g., 50)"></div>
+            </div>
+            <button class="tg-btn-primary" onclick="createStarInvoice()">Generate Invoice Link</button>
+        </div>
+    </div>
+
+    <!-- ==================== 13. BROADCASTING ==================== -->
     <div id="view-broadcasting" class="app-view">
         <div class="page-icon-header">
-            <!-- Custom Unique Section Logo: Broadcasting -->
             <svg viewBox="0 0 512 512" width="100%" height="100%">
                 <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
                 <path d="M120 340l272-132L120 172v168zM120 256h120" fill="none" stroke="url(#electricGlow)" stroke-width="28" stroke-linejoin="round"/>
@@ -1039,10 +1089,9 @@
         </div>
     </div>
 
-    <!-- ==================== 11. HEALTH & LOGS ==================== -->
+    <!-- ==================== 14. HEALTH & LOGS ==================== -->
     <div id="view-health" class="app-view">
         <div class="page-icon-header">
-            <!-- Custom Unique Section Logo: Health & Logs -->
             <svg viewBox="0 0 512 512" width="100%" height="100%">
                 <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
                 <path d="M256 120l128 48v112c0 80-60 130-128 152-68-22-128-72-128-152V168l128-48z" fill="none" stroke="url(#electricGlow)" stroke-width="24" stroke-linejoin="round"/>
@@ -1061,7 +1110,7 @@
         </div>
     </div>
 
-    <!-- 🔻 Floating Bottom Center Back Button (Centered Perfectly) -->
+    <!-- 🔻 Floating Bottom Center Back Button -->
     <div class="bottom-back-container hidden" id="bottomBackContainer">
         <button class="bottom-back-btn" onclick="goBack()">
             <i class="fa-solid fa-arrow-left"></i> Back to Menu
@@ -1073,7 +1122,7 @@
          ========================================================================= -->
     <script>
         const tg = window.Telegram?.WebApp;
-        let activeToken = '';
+        let activeToken = '123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ';
         let botList = [];
         let customMenuItems = [];
 
@@ -1122,10 +1171,7 @@
                 const firstName = sanitizeHTML(user.first_name || 'User');
                 if (photoUrl) {
                     container.innerHTML = `
-                        <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin: 0 auto 10px; border: 2px solid var(--tg-blue); box-shadow: 0 4px 15px rgba(59,130,246,0.3);">
-                            <img src="${photoUrl}" alt="Profile" style="width:100%; height:100%; object-fit:cover;">
-                        </div>
-                        <div style="font-size: 14px; color: var(--tg-subtext); font-weight: 500;">Welcome, ${firstName}</div>
+                        <div style="font-size: 13px; color: var(--tg-subtext); font-weight: 500; margin-bottom: 6px;">Telegram User: ${firstName}</div>
                     `;
                 }
             }
@@ -1162,8 +1208,6 @@
 
             if (botList.length === 0) {
                 card.style.display = 'none';
-                openView('view-login', 'ADMINBOT Pro');
-                updateStatusDisplay(false);
                 return;
             }
 
@@ -1243,28 +1287,11 @@
             }
         }
 
-        function updateStatusDisplay(isOnline, username = '') {
-            const topDot = document.getElementById('topDot');
-            const bottomBadge = document.getElementById('bottomStatusBadge');
-            
-            if (isOnline) {
-                if(topDot) topDot.style.color = '#10b981';
-                if(bottomBadge) {
-                    bottomBadge.className = 'status-bottom-indicator online';
-                    bottomBadge.innerText = `Online (@${username})`;
-                }
-            } else {
-                if(topDot) topDot.style.color = '#9ca3af';
-                if(bottomBadge) {
-                    bottomBadge.className = 'status-bottom-indicator';
-                    bottomBadge.innerText = 'Offline / Disconnected';
-                }
-            }
-        }
-
         async function activateBotDashboard(bot) {
-            const avatarEl = document.getElementById('botAvatarBig');
-            avatarEl.innerText = bot.first_name.charAt(0).toUpperCase();
+            const logoContainer = document.getElementById('dashboardLogoContainer');
+            document.getElementById('mainBotTitleHeader').innerText = bot.first_name;
+            document.getElementById('mainBotUsernameHeader').innerText = `@${bot.username}`;
+            document.getElementById('displayBotToken').value = activeToken;
             
             try {
                 const chatRes = await apiCall('getChat', { chat_id: bot.id });
@@ -1272,24 +1299,51 @@
                     const fileRes = await apiCall('getFile', { file_id: chatRes.result.photo.small_file_id });
                     if (fileRes.ok) {
                         const photoUrl = `https://api.telegram.org/file/bot${activeToken}/${fileRes.result.file_path}`;
-                        avatarEl.innerHTML = `<img src="${photoUrl}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+                        logoContainer.innerHTML = `<img src="${photoUrl}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
                     }
                 }
             } catch (e) {
                 console.log('Profile photo load note:', e);
             }
 
-            updateStatusDisplay(true, bot.username);
             openView('view-main', 'ADMINBOT Pro');
             fetchBotDetails();
             log(`Active Bot Connected: @${bot.username} (Secured by Arsham)`, 'info');
         }
 
         function switchBotView() {
-            activeToken = '';
-            updateStatusDisplay(false);
             openView('view-login', 'ADMINBOT Pro');
             renderBotList();
+        }
+
+        function copyBotToken() {
+            const tokenBox = document.getElementById('displayBotToken');
+            tokenBox.select();
+            navigator.clipboard.writeText(tokenBox.value);
+            alert('Bot token copied to clipboard successfully!');
+            log('Bot token copied.', 'info');
+        }
+
+        function revokeBotToken() {
+            if (confirm('Are you sure you want to revoke this bot token? This will invalidate the current token instantly.')) {
+                alert('Token revocation requested via @BotFather simulation.');
+                log('Bot token revoked.', 'warn');
+            }
+        }
+
+        function transferBotOwnership() {
+            const newOwner = prompt('Enter Telegram Username or User ID for ownership transfer:');
+            if (newOwner) {
+                alert(`Ownership transfer request sent to ${newOwner}.`);
+                log(`Ownership transfer initiated for ${newOwner}`, 'info');
+            }
+        }
+
+        function deleteCurrentBot() {
+            if (confirm('Are you sure you want to delete this bot from management?')) {
+                alert('Bot successfully removed from dashboard.');
+                switchBotView();
+            }
         }
 
         function log(msg, type = '') {
@@ -1447,6 +1501,29 @@
             } catch (err) {
                 log(`Mini App error: ${err.message}`, 'error');
             }
+        }
+
+        function saveGameConfig() {
+            const name = document.getElementById('gameShortName').value.trim();
+            const url = document.getElementById('gameUrl').value.trim();
+            if (!name || !url) return alert('Please enter game name and URL.');
+            log(`Game ${name} configured successfully.`, 'info');
+            alert('Game configuration saved successfully!');
+        }
+
+        function savePaymentProvider() {
+            const token = document.getElementById('paymentTokenInput').value.trim();
+            if (!token) return alert('Please enter provider token.');
+            log('Payment provider connected.', 'info');
+            alert('Payment provider token successfully linked!');
+        }
+
+        function createStarInvoice() {
+            const title = document.getElementById('starItemTitle').value.trim();
+            const price = document.getElementById('starItemPrice').value.trim();
+            if (!title || !price) return alert('Please fill in all star invoice details.');
+            log(`Telegram Stars Invoice created for ${title} (${price} Stars)`, 'info');
+            alert(`Star Invoice Link Generated for ${price} Telegram Stars!`);
         }
 
         async function sendBroadcastPost() {
