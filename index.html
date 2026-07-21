@@ -9,16 +9,19 @@
     
     <style>
         :root {
-            --tg-bg: #000000;
-            --tg-card: #1c1c1d;
+            --tg-bg: #030712;
+            --tg-card: #111827;
+            --tg-card-hover: #1f2937;
             --tg-text: #ffffff;
-            --tg-subtext: #8e8e93;
-            --tg-blue: #0a84ff;
-            --tg-blue-hover: #007aff;
-            --tg-red: #ff453a;
-            --tg-green: #30d158;
-            --tg-border: #2c2c2e;
-            --squircle-radius: 16px;
+            --tg-subtext: #9ca3af;
+            --tg-blue: #3b82f6;
+            --tg-indigo: #6366f1;
+            --tg-cyan: #06b6d4;
+            --tg-red: #ef4444;
+            --tg-green: #10b981;
+            --tg-border: rgba(255, 255, 255, 0.08);
+            --squircle-radius: 20px;
+            --glow-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
         }
 
         * {
@@ -35,32 +38,23 @@
             user-select: none;
             overflow-x: hidden;
             font-size: 17px;
+            padding-bottom: 100px;
         }
 
         /* 📱 Telegram iOS Header */
         .tg-header {
-            background: rgba(28, 28, 29, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            height: 44px;
+            height: 52px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 16px;
-            border-bottom: 0.5px solid var(--tg-border);
-        }
-
-        .tg-header .back-btn {
-            color: var(--tg-blue);
-            font-size: 17px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 400;
+            border-bottom: 1px solid var(--tg-border);
         }
 
         .tg-header .title {
@@ -69,11 +63,9 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-        }
-
-        .tg-header .option-btn {
-            color: var(--tg-blue);
-            cursor: pointer;
+            background: linear-gradient(135deg, #fff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         /* 📋 Telegram Grouped Lists */
@@ -85,9 +77,10 @@
         .tg-group-title {
             font-size: 13px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
             color: var(--tg-subtext);
-            padding: 0 16px 8px;
-            font-weight: 500;
+            padding: 0 20px 8px;
+            font-weight: 600;
         }
 
         .tg-list {
@@ -95,21 +88,23 @@
             border-radius: var(--squircle-radius);
             margin: 0 16px;
             overflow: hidden;
+            border: 1px solid var(--tg-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .tg-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 16px;
-            border-bottom: 0.5px solid var(--tg-border);
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--tg-border);
             cursor: pointer;
-            min-height: 44px;
-            transition: background 0.2s;
+            min-height: 52px;
+            transition: background 0.2s, transform 0.1s;
         }
 
         .tg-item:active {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--tg-card-hover);
         }
 
         .tg-item:last-child {
@@ -119,34 +114,33 @@
         .tg-item-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
             flex: 1;
         }
 
-        .tg-icon-box {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
+        /* Custom Section Logo Icons Container */
+        .section-icon-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            background: transparent;
-            border: 1px solid var(--tg-subtext);
-            color: var(--tg-subtext);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(6, 182, 212, 0.15));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
         }
-        
-        .icon-info { border: 1.5px solid var(--tg-subtext); border-radius: 50%; width: 22px; height: 22px; font-size: 12px; }
-        .icon-cmd { border: 1.5px solid var(--tg-subtext); border-radius: 8px; width: 22px; height: 22px; font-size: 12px; }
-        .icon-app { border: none; font-size: 22px; }
-        .icon-bot { border: none; font-size: 22px; }
+        .section-icon-badge svg {
+            width: 20px;
+            height: 20px;
+        }
 
         .tg-item-right {
             display: flex;
             align-items: center;
             gap: 8px;
             color: var(--tg-subtext);
-            font-size: 17px;
+            font-size: 16px;
         }
 
         .tg-chevron::after {
@@ -154,19 +148,20 @@
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
             font-size: 12px;
-            color: #5c5c5e;
+            color: var(--tg-subtext);
         }
 
         .tg-caption {
             font-size: 13px;
             color: var(--tg-subtext);
-            padding: 8px 16px;
-            line-height: 1.4;
+            padding: 10px 20px;
+            line-height: 1.5;
         }
 
         .tg-caption a {
             color: var(--tg-blue);
             text-decoration: none;
+            font-weight: 500;
         }
 
         /* 🎛️ Inputs & Textareas */
@@ -183,12 +178,12 @@
             border: none;
             color: var(--tg-text);
             font-size: 17px;
-            padding: 12px 16px;
+            padding: 14px 18px;
             outline: none;
         }
 
         .tg-input::placeholder {
-            color: #5c5c5e;
+            color: #4b5563;
         }
 
         .tg-textarea {
@@ -197,10 +192,10 @@
             border: none;
             color: var(--tg-text);
             font-size: 17px;
-            padding: 12px 16px;
+            padding: 14px 18px;
             outline: none;
             resize: vertical;
-            min-height: 80px;
+            min-height: 100px;
         }
 
         /* 🔘 Toggle Switch */
@@ -208,7 +203,8 @@
             appearance: none;
             width: 50px;
             height: 30px;
-            background: #39393d;
+            background: #1f2937;
+            border: 1px solid var(--tg-border);
             border-radius: 15px;
             position: relative;
             outline: none;
@@ -221,57 +217,73 @@
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 26px;
-            height: 26px;
+            width: 24px;
+            height: 24px;
             background: #fff;
             border-radius: 50%;
             transition: 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
         .tg-toggle:checked {
-            background: #34c759;
+            background: var(--tg-green);
+            border-color: var(--tg-green);
         }
 
         .tg-toggle:checked::after {
             transform: translateX(20px);
         }
 
-        /* 🔵 Squircle Buttons (Rounded Square) */
+        /* 🔵 Squircle Buttons */
         .tg-btn-primary {
-            background: var(--tg-blue);
+            background: linear-gradient(135deg, var(--tg-indigo), var(--tg-blue));
             color: white;
             border: none;
             width: calc(100% - 32px);
             margin: 20px 16px;
-            padding: 14px;
+            padding: 15px;
             border-radius: var(--squircle-radius);
             font-size: 17px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+            box-shadow: var(--glow-shadow);
             transition: transform 0.1s, opacity 0.2s;
         }
         .tg-btn-primary:active {
             transform: scale(0.98);
-            opacity: 0.85;
+            opacity: 0.9;
         }
 
         .text-blue { color: var(--tg-blue) !important; }
         .text-red { color: var(--tg-red) !important; }
+        .text-cyan { color: var(--tg-cyan) !important; }
 
-        /* Centralized Header with Status on Top & Bottom */
+        /* Centralized Luxury Header with Master Logo */
         .central-status-header {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 24px 16px 12px;
+            padding: 30px 16px 20px;
             text-align: center;
         }
+
+        .master-logo-container {
+            width: 95px;
+            height: 95px;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4));
+            animation: pulseGlow 3s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.3)); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 28px rgba(6, 182, 212, 0.6)); transform: scale(1.03); }
+        }
+
         .status-top-indicator {
             font-size: 11px;
             font-weight: 700;
-            letter-spacing: 0.8px;
+            letter-spacing: 1px;
             text-transform: uppercase;
             color: var(--tg-subtext);
             margin-bottom: 6px;
@@ -280,68 +292,81 @@
             gap: 6px;
         }
         .status-top-indicator i { font-size: 8px; color: var(--tg-subtext); }
+        
         .central-status-header h2 {
-            font-size: 26px;
-            font-weight: 700;
+            font-size: 28px;
+            font-weight: 800;
             color: var(--tg-text);
             letter-spacing: -0.5px;
-            margin: 2px 0;
+            margin: 4px 0;
+            background: linear-gradient(135deg, #ffffff, #93c5fd, #67e8f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
         .status-bottom-indicator {
             font-size: 12px;
             font-weight: 600;
             color: var(--tg-red);
-            margin-top: 6px;
-            padding: 3px 12px;
-            background: rgba(255, 69, 58, 0.15);
-            border-radius: 12px;
+            margin-top: 8px;
+            padding: 4px 14px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 20px;
             display: inline-block;
         }
         .status-bottom-indicator.online {
             color: var(--tg-green);
-            background: rgba(48, 209, 88, 0.15);
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
         }
 
         /* Bot & User Avatar UI */
         .bot-avatar-large {
-            width: 80px;
-            height: 80px;
-            background: #2481cc;
+            width: 84px;
+            height: 84px;
+            background: linear-gradient(135deg, var(--tg-indigo), var(--tg-blue));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 34px;
             font-weight: bold;
             color: white;
-            margin: 0 auto 10px;
+            margin: 0 auto 12px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border: 2px solid var(--tg-border);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
         .bot-avatar-badge {
-            background: rgba(255,255,255,0.1);
-            padding: 6px 14px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--tg-border);
+            padding: 8px 16px;
             border-radius: 20px;
             font-size: 14px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             cursor: pointer;
+            transition: background 0.2s;
+        }
+        .bot-avatar-badge:active {
+            background: rgba(255,255,255,0.15);
         }
 
         /* Log Box */
         .log-box {
-            background: #000;
+            background: #000000;
             border-radius: var(--squircle-radius);
-            padding: 12px;
+            padding: 14px;
             font-family: monospace;
             font-size: 12px;
-            color: #30d158;
-            max-height: 150px;
+            color: var(--tg-green);
+            max-height: 160px;
             overflow-y: auto;
             margin: 0 16px 20px;
             border: 1px solid var(--tg-border);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.8);
         }
 
         /* View Manager */
@@ -352,7 +377,75 @@
             text-align: center;
             font-size: 12px;
             color: var(--tg-subtext);
-            padding: 20px 0;
+            padding: 24px 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* 🔻 Bottom Center Back Button Container (Requested by User) */
+        .bottom-back-container {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 999;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .bottom-back-container.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+        .bottom-back-btn {
+            pointer-events: auto;
+            background: linear-gradient(135deg, #1f2937, #111827);
+            color: var(--tg-text);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(59, 130, 246, 0.2);
+            cursor: pointer;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bottom-back-btn:active {
+            transform: scale(0.95);
+            background: #374151;
+        }
+        .bottom-back-btn i {
+            color: var(--tg-blue);
+        }
+
+        /* Page Headers */
+        .page-icon-header {
+            text-align: center;
+            padding: 24px 16px 16px;
+        }
+        .page-icon-header svg {
+            width: 54px;
+            height: 54px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.4));
+        }
+        .page-icon-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .page-icon-header p {
+            font-size: 14px;
+            color: var(--tg-subtext);
+            max-width: 320px;
+            margin: 0 auto;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -360,17 +453,49 @@
 
     <!-- Global Header -->
     <div class="tg-header" id="mainHeader">
-        <div class="back-btn" id="backBtn" onclick="goBack()" style="display: none;">
-            <i class="fa-solid fa-chevron-left"></i> Back
-        </div>
         <div class="title" id="headerTitle">ADMINBOT Pro</div>
-        <div class="option-btn" id="headerOption"></div>
     </div>
 
     <!-- ==================== 1. LOGIN / BOT SELECTION ==================== -->
     <div id="view-login" class="app-view active">
-        <!-- Centered Name with Status on Top & Bottom -->
         <div class="central-status-header">
+            <!-- Master Luxury SVG Logo Provided -->
+            <div class="master-logo-container">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+                  <defs>
+                    <linearGradient id="darkBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#0B0F19"/>
+                      <stop offset="50%" stop-color="#111827"/>
+                      <stop offset="100%" stop-color="#030712"/>
+                    </linearGradient>
+                    <linearGradient id="electricGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#6366F1"/>
+                      <stop offset="50%" stop-color="#3B82F6"/>
+                      <stop offset="100%" stop-color="#06B6D4"/>
+                    </linearGradient>
+                    <linearGradient id="metalLine" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="rgba(255, 255, 255, 0.4)"/>
+                      <stop offset="100%" stop-color="rgba(255, 255, 255, 0.05)"/>
+                    </linearGradient>
+                    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                      <feGaussianBlur stdDeviation="12" result="blur" />
+                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                  </defs>
+                  <rect x="16" y="16" width="480" height="480" rx="108" fill="url(#darkBg)" stroke="url(#metalLine)" stroke-width="2"/>
+                  <rect x="28" y="28" width="456" height="456" rx="96" fill="none" stroke="url(#electricGlow)" stroke-width="2" opacity="0.25" filter="url(#glow)"/>
+                  <g transform="translate(0, 8)">
+                    <path d="M 256 110 L 370 160 V 270 C 370 345 315 405 256 425 C 197 405 142 345 142 270 V 160 Z" fill="rgba(17, 24, 39, 0.6)" stroke="url(#electricGlow)" stroke-width="6" stroke-linejoin="round" filter="url(#glow)"/>
+                    <path d="M 256 165 L 185 320 H 215 L 256 230 Z" fill="url(#electricGlow)"/>
+                    <path d="M 256 165 L 327 320 H 297 L 256 230 Z" fill="url(#electricGlow)"/>
+                    <polygon points="256,190 270,225 256,260 242,225" fill="#FFFFFF" filter="url(#glow)"/>
+                    <rect x="210" y="275" width="92" height="10" rx="5" fill="url(#electricGlow)"/>
+                    <circle cx="256" cy="135" r="6" fill="#06B6D4" filter="url(#glow)"/>
+                    <circle cx="225" cy="142" r="4" fill="#6366F1"/>
+                    <circle cx="287" cy="142" r="4" fill="#6366F1"/>
+                  </g>
+                </svg>
+            </div>
             <div id="userProfileHeaderContainer" style="margin-bottom: 12px;"></div>
             <div class="status-top-indicator"><i class="fa-solid fa-circle" id="topDot"></i> System Status</div>
             <h2>ADMINBOT Pro</h2>
@@ -400,36 +525,84 @@
         <div class="tg-group">
             <div class="tg-group-title">Settings</div>
             <div class="tg-list">
+                <!-- Edit Info -->
                 <div class="tg-item" onclick="openView('view-edit-info', 'Edit Info')">
-                    <div class="tg-item-left"><i class="fa-solid fa-info icon-info"></i> <span>Edit Info & Profile</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        </div>
+                        <span>Edit Info & Profile</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
+                <!-- Logo & GIF Studio -->
                 <div class="tg-item" onclick="openView('view-logo-maker', 'Logo & GIF Studio')">
-                    <div class="tg-item-left"><i class="fa-solid fa-palette text-blue"></i> <span class="text-blue">Logo & GIF Studio</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        </div>
+                        <span class="text-blue">Logo & GIF Studio</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
+                <!-- Commands -->
                 <div class="tg-item" onclick="openView('view-commands', 'Commands')">
-                    <div class="tg-item-left"><i class="fa-solid fa-slash icon-cmd"></i> <span>Commands</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                        </div>
+                        <span>Commands</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
+                <!-- Custom Menu Builder -->
                 <div class="tg-item" onclick="openView('view-menu-builder', 'Menu Builder')">
-                    <div class="tg-item-left"><i class="fa-solid fa-bars-staggered text-blue"></i> <span class="text-blue">Custom Menu Builder</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                        </div>
+                        <span class="text-blue">Custom Menu Builder</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
+                <!-- Mini Apps -->
                 <div class="tg-item" onclick="openView('view-miniapps', 'Mini Apps')">
-                    <div class="tg-item-left"><i class="fa-solid fa-border-all icon-app"></i> <span>Mini Apps</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        </div>
+                        <span>Mini Apps</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
+                <!-- Bot Settings -->
                 <div class="tg-item" onclick="openView('view-bot-settings', 'Bot Settings')">
-                    <div class="tg-item-left"><i class="fa-solid fa-robot icon-bot"></i> <span>Bot Settings</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="7" r="4"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="16" y1="15" x2="16" y2="15"/></svg>
+                        </div>
+                        <span>Bot Settings</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
+                <!-- Login Widget -->
                 <div class="tg-item" onclick="openView('view-login-widget', 'Login Widget')">
-                    <div class="tg-item-left"><i class="fa-solid fa-key" style="color: var(--tg-subtext);"></i> <span>Login Widget</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.778-7.778zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                        </div>
+                        <span>Login Widget</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
+                <!-- Games -->
                 <div class="tg-item" onclick="alert('Games menu selected')">
-                    <div class="tg-item-left"><i class="fa-solid fa-gamepad" style="color: var(--tg-subtext);"></i> <span>Games</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m10-2h.01M16 14h.01"/></svg>
+                        </div>
+                        <span>Games</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
             </div>
@@ -439,27 +612,47 @@
             <div class="tg-group-title">Monetization</div>
             <div class="tg-list">
                 <div class="tg-item">
-                    <div class="tg-item-left"><i class="fa-solid fa-dollar-sign icon-info"></i> <span>Payments</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                        <span>Payments</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
                 <div class="tg-item">
-                    <div class="tg-item-left"><i class="fa-regular fa-star icon-info"></i> <span>Telegram Stars</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                        <span>Telegram Stars</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
             </div>
             <div class="tg-caption">Telegram Stars are designed for digital content and in-app items. If you want to sell physical goods, use Payments instead. <a href="#">Read more ></a></div>
         </div>
         
-        <!-- Legacy Features Preserved -->
+        <!-- Advanced Features -->
         <div class="tg-group">
             <div class="tg-group-title">Advanced Features (Legacy)</div>
             <div class="tg-list">
                 <div class="tg-item" onclick="openView('view-broadcasting', 'Broadcasting')">
-                    <div class="tg-item-left"><i class="fa-solid fa-paper-plane text-blue"></i> <span>Broadcasting & Posts</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        </div>
+                        <span class="text-blue">Broadcasting & Posts</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
                 <div class="tg-item" onclick="openView('view-health', 'Health & Logs')">
-                    <div class="tg-item-left"><i class="fa-solid fa-bug text-blue"></i> <span>System Health & Logs</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <span class="text-blue">System Health & Logs</span>
+                    </div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
             </div>
@@ -469,13 +662,28 @@
             <div class="tg-group-title">Actions</div>
             <div class="tg-list">
                 <div class="tg-item" onclick="switchBotView()">
-                    <div class="tg-item-left"><i class="fa-solid fa-arrows-rotate text-blue"></i> <span class="text-blue">Switch Bot</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                        </div>
+                        <span class="text-blue">Switch Bot</span>
+                    </div>
                 </div>
                 <div class="tg-item" onclick="alert('Ownership transfer initiated')">
-                    <div class="tg-item-left"><i class="fa-solid fa-user-group text-blue"></i> <span class="text-blue">Transfer Ownership</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <span class="text-blue">Transfer Ownership</span>
+                    </div>
                 </div>
                 <div class="tg-item" onclick="alert('Delete bot feature')">
-                    <div class="tg-item-left"><i class="fa-regular fa-trash-can text-red"></i> <span class="text-red">Delete Bot</span></div>
+                    <div class="tg-item-left">
+                        <div class="section-icon-badge" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.1);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        </div>
+                        <span class="text-red">Delete Bot</span>
+                    </div>
                 </div>
             </div>
             <div class="tg-caption" style="text-align: center;">By publishing this bot, you agree to the <a href="#">Telegram Terms of Service for Developers.</a></div>
@@ -483,7 +691,7 @@
         <div class="creator-footer">Created by Arsham</div>
     </div>
 
-    <!-- ==================== 3. EDIT INFO & PROFILE PICTURE ==================== -->
+    <!-- ==================== 3. EDIT INFO ==================== -->
     <div id="view-edit-info" class="app-view">
         <div style="text-align: center; margin-top: 20px;">
             <div class="bot-avatar-large" id="botAvatarBig">A</div>
@@ -498,14 +706,14 @@
             </div>
             <div class="tg-list">
                 <div class="tg-input-row"><input type="text" id="editBotName" class="tg-input" placeholder="Bot Name"></div>
-                <div class="tg-input-row" style="border-top: 0.5px solid var(--tg-border);"><input type="text" id="editShortDesc" class="tg-input" placeholder="About"></div>
+                <div class="tg-input-row" style="border-top: 1px solid var(--tg-border);"><input type="text" id="editShortDesc" class="tg-input" placeholder="About"></div>
             </div>
             <div class="tg-caption">People will see this text on the bot's profile page.</div>
         </div>
 
         <div class="tg-group">
             <div class="tg-group-title">Welcome Message</div>
-            <div style="margin: 0 16px 16px; background: #2c2c2e; border: 1px dashed #5c5c5e; border-radius: 12px; height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="margin: 0 16px 16px; background: #111827; border: 1px dashed var(--tg-border); border-radius: var(--squircle-radius); height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <i class="fa-solid fa-camera" style="font-size: 32px; color: var(--tg-blue); margin-bottom: 10px;"></i>
                 <div style="font-weight: 600;">What can this bot do?</div>
                 <div style="color: var(--tg-subtext); font-size: 14px; margin-bottom: 12px;">This bot is built to set up your bot</div>
@@ -520,16 +728,18 @@
         <button class="tg-btn-primary" onclick="updateBotProfileDetails()">Update Profile</button>
     </div>
 
-    <!-- ==================== 4. LOGO & GIF STUDIO (New Feature) ==================== -->
+    <!-- ==================== 4. LOGO & GIF STUDIO ==================== -->
     <div id="view-logo-maker" class="app-view">
-        <div class="page-icon-header" style="text-align: center; padding: 20px;">
-            <i class="fa-solid fa-palette text-blue" style="font-size: 40px; margin-bottom: 10px;"></i>
+        <div class="page-icon-header">
+            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
             <h2>Logo & GIF Studio</h2>
-            <p style="color: var(--tg-subtext); font-size: 14px;">Create or generate custom avatars, logos, or animated GIFs for your bot.</p>
+            <p>Create or generate custom avatars, logos, or animated GIFs for your bot.</p>
         </div>
 
         <div style="text-align: center; margin: 15px 0;">
-            <div id="logoCanvasPreview" style="width: 120px; height: 120px; background: linear-gradient(135deg, #0a84ff, #5856d6); border-radius: 30px; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 42px; font-weight: bold; color: white; box-shadow: 0 8px 25px rgba(10,132,255,0.4);">
+            <div id="logoCanvasPreview" style="width: 120px; height: 120px; background: linear-gradient(135deg, #6366f1, #3b82f6); border-radius: 30px; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 42px; font-weight: bold; color: white; box-shadow: 0 8px 25px rgba(59,130,246,0.4);">
                 🤖
             </div>
         </div>
@@ -543,10 +753,10 @@
                 <div class="tg-item">
                     <span>Background Theme</span>
                     <select id="logoTheme" class="tg-input" style="background: transparent; color: white; text-align: right; width: auto;" onchange="updateLogoPreview()">
-                        <option value="linear-gradient(135deg, #0a84ff, #5856d6)">Blue / Purple</option>
-                        <option value="linear-gradient(135deg, #30d158, #0a84ff)">Green / Blue</option>
-                        <option value="linear-gradient(135deg, #ff453a, #ff9f0a)">Red / Orange</option>
-                        <option value="#1c1c1d">Solid Dark</option>
+                        <option value="linear-gradient(135deg, #6366f1, #3b82f6)">Indigo / Blue</option>
+                        <option value="linear-gradient(135deg, #10b981, #3b82f6)">Green / Blue</option>
+                        <option value="linear-gradient(135deg, #ef4444, #f59e0b)">Red / Orange</option>
+                        <option value="#111827">Solid Dark</option>
                     </select>
                 </div>
             </div>
@@ -568,34 +778,36 @@
     <!-- ==================== 5. COMMANDS ==================== -->
     <div id="view-commands" class="app-view">
         <div class="page-icon-header">
-            <i class="fa-solid fa-slash icon-app"></i>
+            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            </div>
             <h2>Commands</h2>
             <p>A command is a simple /keyword that tells the bot what to do. <a href="#">Read more ></a></p>
         </div>
 
         <div class="tg-group">
             <div class="tg-group-title" style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 16px; font-weight: 600; color: white;">List</span>
+                <span style="font-size: 14px; font-weight: 600; color: white;">List</span>
                 <div>
                     <span class="text-blue" style="margin-right: 12px;"><i class="fa-solid fa-globe"></i> Default ˅</span>
                     <span class="text-blue">Edit</span>
                 </div>
             </div>
             <div class="tg-list">
-                <div class="tg-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
-                    <div class="text-blue">Add a Command</div>
+                <div class="tg-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                    <div class="text-blue" style="font-weight: 600;">Add a Command</div>
                     <div style="width: 100%; display: flex; gap: 8px;">
-                        <input type="text" id="cmdName" class="tg-input" placeholder="/start" style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 8px;">
-                        <input type="text" id="cmdDesc" class="tg-input" placeholder="Description" style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 8px;">
+                        <input type="text" id="cmdName" class="tg-input" placeholder="/start" style="background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid var(--tg-border); padding: 10px;">
+                        <input type="text" id="cmdDesc" class="tg-input" placeholder="Description" style="background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid var(--tg-border); padding: 10px;">
                     </div>
-                    <button class="text-blue" style="background: transparent; border: none; font-size: 15px; margin-top: 5px; cursor:pointer;" onclick="addSingleCommand()">+ Save Command</button>
+                    <button class="tg-btn-primary" style="margin: 5px 0 0 0; width: 100%; padding: 10px;" onclick="addSingleCommand()">+ Save Command</button>
                 </div>
                 <div class="tg-item">
-                    <div class="tg-item-left"><span>/start</span> <span style="color: var(--tg-subtext);">Welcome to our bot</span></div>
+                    <div class="tg-item-left"><span style="font-weight: 600;">/start</span> <span style="color: var(--tg-subtext);">Welcome to our bot</span></div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
                 <div class="tg-item">
-                    <div class="tg-item-left"><span>/admin_bot</span> <span style="color: var(--tg-subtext);">Start server</span></div>
+                    <div class="tg-item-left"><span style="font-weight: 600;">/admin_bot</span> <span style="color: var(--tg-subtext);">Start server</span></div>
                     <div class="tg-item-right"><div class="tg-chevron"></div></div>
                 </div>
             </div>
@@ -606,7 +818,9 @@
     <!-- ==================== 6. CUSTOM MENU BUILDER ==================== -->
     <div id="view-menu-builder" class="app-view">
         <div class="page-icon-header">
-            <i class="fa-solid fa-bars-staggered icon-app"></i>
+            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </div>
             <h2>Custom Menu Builder</h2>
             <p>Create custom menus and inline/reply buttons for your bot</p>
         </div>
@@ -617,7 +831,7 @@
                 <div class="tg-input-row">
                     <input type="text" id="menuButtonText" class="tg-input" placeholder="Button Title (e.g., 🌐 Our Website)">
                 </div>
-                <div class="tg-input-row" style="border-top: 0.5px solid var(--tg-border);">
+                <div class="tg-input-row" style="border-top: 1px solid var(--tg-border);">
                     <input type="text" id="menuButtonCallback" class="tg-input" placeholder="Link or Command (e.g., https://example.com or /help)">
                 </div>
             </div>
@@ -626,7 +840,7 @@
 
         <div class="tg-group">
             <div class="tg-group-title">Menu Preview</div>
-            <div class="tg-list" id="menuPreviewList" style="padding: 12px; text-align: center; color: var(--tg-subtext);">
+            <div class="tg-list" id="menuPreviewList" style="padding: 16px; text-align: center; color: var(--tg-subtext);">
                 No menu buttons added yet.
             </div>
         </div>
@@ -635,7 +849,9 @@
     <!-- ==================== 7. LOGIN WIDGET ==================== -->
     <div id="view-login-widget" class="app-view">
         <div class="page-icon-header">
-            <i class="fa-solid fa-key icon-app"></i>
+            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.778-7.778zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+            </div>
             <h2>Login Widget</h2>
             <p>Allow users to log in to your website or app with their Telegram account.</p>
         </div>
@@ -657,19 +873,27 @@
 
     <!-- ==================== 8. BOT SETTINGS / MODES ==================== -->
     <div id="view-bot-settings" class="app-view">
+        <div class="page-icon-header">
+            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="7" r="4"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="16" y1="15" x2="16" y2="15"/></svg>
+            </div>
+            <h2>Bot Settings</h2>
+            <p>Configure bot rights, group permissions, and execution modes.</p>
+        </div>
+
         <div class="tg-group">
-            <div class="tg-group-title" style="font-size: 16px; font-weight: 600; color: white;">Groups and Channels</div>
+            <div class="tg-group-title" style="font-size: 14px; font-weight: 600; color: white;">Groups and Channels</div>
             <div class="tg-list">
                 <div class="tg-item">
                     <div style="flex:1">
-                        <div>Allow Groups</div>
+                        <div style="font-weight: 500;">Allow Groups</div>
                         <div style="font-size: 13px; color: var(--tg-subtext); margin-top: 4px;">Enable bots in groups for tasks like posting announcements or celebrating birthdays.</div>
                     </div>
                     <input type="checkbox" class="tg-toggle" checked onclick="toggleJoinGroups()">
                 </div>
                 <div class="tg-item">
                     <div style="flex:1">
-                        <div>Group Privacy</div>
+                        <div style="font-weight: 500;">Group Privacy</div>
                         <div style="font-size: 13px; color: var(--tg-subtext); margin-top: 4px;">Receive only messages that mention or reply to your bot, or contain /commands.</div>
                     </div>
                     <input type="checkbox" class="tg-toggle" checked onclick="togglePrivacyMode()">
@@ -683,11 +907,11 @@
                     <input type="checkbox" class="tg-toggle" checked>
                 </div>
             </div>
-            <div class="tg-caption">You can choose which rights the bot will request by default when added as a group/channel admin.<br><br>If the bot doesn't support managing groups or channels, disable the group or channel switches. <a href="#">Read more ></a></div>
+            <div class="tg-caption">You can choose which rights the bot will request by default when added as a group/channel admin. <a href="#">Read more ></a></div>
         </div>
 
         <div class="tg-group">
-            <div class="tg-group-title" style="font-size: 16px; font-weight: 600; color: white;">Mode Settings</div>
+            <div class="tg-group-title" style="font-size: 14px; font-weight: 600; color: white;">Mode Settings</div>
             <div class="tg-list">
                 <div class="tg-item" onclick="toggleInlineMode()">
                     <span>Inline Mode</span>
@@ -709,9 +933,11 @@
     <!-- ==================== 9. MINI APPS ==================== -->
     <div id="view-miniapps" class="app-view">
         <div class="page-icon-header">
-            <i class="fa-solid fa-border-all icon-app"></i>
+            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
             <h2>Mini Apps</h2>
-            <p>Use JavaScript to create infinitely flexible interfaces that can be launched right inside Telegram — and can completely replace any website. <a href="#">Read More ></a></p>
+            <p>Use JavaScript to create infinitely flexible interfaces launched inside Telegram. <a href="#">Read More ></a></p>
         </div>
 
         <div class="tg-group">
@@ -725,12 +951,12 @@
                     <div class="tg-item-right">Enabled <div class="tg-chevron"></div></div>
                 </div>
             </div>
-            <div class="tg-caption">Enable the Main App to unlock a number of features that streamline and simplify the way in which users view and interact with it. <a href="#">Read more ></a></div>
+            <div class="tg-caption">Enable the Main App to unlock features that streamline user interaction. <a href="#">Read more ></a></div>
             
             <div class="tg-list" style="margin-top: 16px;">
                 <div class="tg-item">
                     <div style="flex:1">
-                        <div>Same-Origin Restriction</div>
+                        <div style="font-weight: 500;">Same-Origin Restriction</div>
                         <div style="font-size: 13px; color: var(--tg-subtext); margin-top: 4px;">Only the Mini App's origin can call the WebApp SDK and read user data.</div>
                     </div>
                     <input type="checkbox" class="tg-toggle" checked>
@@ -739,13 +965,13 @@
         </div>
 
         <div class="tg-group">
-            <div class="tg-group-title" style="font-size: 16px; font-weight: 600; color: white;">Direct Links</div>
+            <div class="tg-group-title" style="font-size: 14px; font-weight: 600; color: white;">Direct Links</div>
             <div class="tg-list">
                 <div class="tg-item">
                     <span class="text-blue"><i class="fa-solid fa-circle-plus"></i> Create Direct Link</span>
                 </div>
             </div>
-            <div class="tg-caption">Direct links can be launched from any chat. They support a 'startapp' parameter and are aware of the current chat context. <a href="#">Read more ></a></div>
+            <div class="tg-caption">Direct links can be launched from any chat supporting startapp parameters. <a href="#">Read more ></a></div>
         </div>
         
         <div class="tg-group">
@@ -757,8 +983,16 @@
         </div>
     </div>
 
-    <!-- ==================== 10. LEGACY BROADCASTING ==================== -->
+    <!-- ==================== 10. BROADCASTING ==================== -->
     <div id="view-broadcasting" class="app-view">
+        <div class="page-icon-header">
+            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </div>
+            <h2>Broadcasting & Posts</h2>
+            <p>Send instant announcements or posts to channels, groups, or users.</p>
+        </div>
+
         <div class="tg-group">
             <div class="tg-group-title">Broadcast Posting</div>
             <div class="tg-list">
@@ -769,8 +1003,16 @@
         </div>
     </div>
 
-    <!-- ==================== 11. LEGACY HEALTH & LOGS ==================== -->
+    <!-- ==================== 11. HEALTH & LOGS ==================== -->
     <div id="view-health" class="app-view">
+        <div class="page-icon-header">
+            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h2>System Health & Logs</h2>
+            <p>Real-time server monitoring, webhook diagnostics, and activity logs.</p>
+        </div>
+
         <div class="tg-group">
             <div class="tg-group-title">Live Activity Console</div>
             <div class="log-box" id="logConsole">
@@ -780,43 +1022,48 @@
         </div>
     </div>
 
+    <!-- 🔻 Floating Bottom Center Back Button (Requested) -->
+    <div class="bottom-back-container hidden" id="bottomBackContainer">
+        <button class="bottom-back-btn" onclick="goBack()">
+            <i class="fa-solid fa-arrow-left"></i> Back to Menu
+        </button>
+    </div>
+
     <!-- =========================================================================
-         JAVASCRIPT BLOCK WITH ENHANCED PROFILE & LOGO STUDIO LOGIC
+         JAVASCRIPT LOGIC
          ========================================================================= -->
     <script>
-        // Init Telegram WebApp SDK
         const tg = window.Telegram?.WebApp;
         let activeToken = '';
         let botList = [];
         let customMenuItems = [];
 
-        // Security: HTML Sanitize Helper to prevent XSS injection
         function sanitizeHTML(str) {
             return str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
             );
         }
 
-        // View Navigation Logic
         function openView(viewId, title) {
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
             
             const headerTitle = document.getElementById('headerTitle');
-            const backBtn = document.getElementById('backBtn');
+            const bottomBackContainer = document.getElementById('bottomBackContainer');
             
             headerTitle.innerText = title;
             
             if(viewId === 'view-main' || viewId === 'view-login') {
-                backBtn.style.display = 'none';
+                bottomBackContainer.classList.add('hidden');
             } else {
-                backBtn.style.display = 'flex';
+                bottomBackContainer.classList.remove('hidden');
             }
             if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function goBack() {
-            openView('view-main', 'Settings');
+            openView('view-main', 'ADMINBOT Pro');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -828,7 +1075,6 @@
             loadSavedBots();
         });
 
-        // Render Telegram User Profile Picture on Login Screen if available
         function renderUserProfile() {
             const user = tg?.initDataUnsafe?.user;
             const container = document.getElementById('userProfileHeaderContainer');
@@ -837,16 +1083,15 @@
                 const firstName = sanitizeHTML(user.first_name || 'User');
                 if (photoUrl) {
                     container.innerHTML = `
-                        <div style="width: 70px; height: 70px; border-radius: 50%; overflow: hidden; margin: 0 auto 8px; border: 2px solid var(--tg-blue);">
+                        <div style="width: 76px; height: 76px; border-radius: 50%; overflow: hidden; margin: 0 auto 10px; border: 2px solid var(--tg-blue); box-shadow: 0 4px 15px rgba(59,130,246,0.3);">
                             <img src="${photoUrl}" alt="Profile" style="width:100%; height:100%; object-fit:cover;">
                         </div>
-                        <div style="font-size: 14px; color: var(--tg-subtext);">Welcome, ${firstName}</div>
+                        <div style="font-size: 14px; color: var(--tg-subtext); font-weight: 500;">Welcome, ${firstName}</div>
                     `;
                 }
             }
         }
 
-        // Safe Telegram API Call Helper
         async function apiCall(method, payload = null) {
             if (!activeToken) throw new Error('No active bot selected.');
             const url = `https://api.telegram.org/bot${activeToken}/${method}`;
@@ -861,7 +1106,6 @@
             return await res.json();
         }
 
-        // Load Bots List from Storage
         function loadSavedBots() {
             const stored = localStorage.getItem('adminbot_saved_bots');
             botList = stored ? JSON.parse(stored) : [];
@@ -872,7 +1116,6 @@
             localStorage.setItem('adminbot_saved_bots', JSON.stringify(botList));
         }
 
-        // Render List of Saved Bots securely
         function renderBotList() {
             const container = document.getElementById('savedBotsContainer');
             const card = document.getElementById('savedBotsCard');
@@ -893,7 +1136,7 @@
                 item.className = 'tg-item';
                 item.innerHTML = `
                     <div class="tg-item-left" onclick="selectBot(${index})">
-                        <div class="bot-avatar-large" style="width: 36px; height: 36px; font-size: 16px; margin: 0;">${safeName.charAt(0).toUpperCase()}</div>
+                        <div class="bot-avatar-large" style="width: 38px; height: 38px; font-size: 16px; margin: 0;">${safeName.charAt(0).toUpperCase()}</div>
                         <div>
                             <div style="font-weight: 600; font-size: 16px;">${safeName}</div>
                             <div style="font-size: 13px; color: var(--tg-subtext);">@${safeUsername}</div>
@@ -905,7 +1148,6 @@
             });
         }
 
-        // Add New Bot with Token Format Check
         async function addNewBot() {
             const tokenInput = document.getElementById('newBotTokenInput').value.trim();
             if (!tokenInput || !tokenInput.includes(':')) {
@@ -967,13 +1209,13 @@
             const bottomBadge = document.getElementById('bottomStatusBadge');
             
             if (isOnline) {
-                if(topDot) topDot.style.color = '#30d158';
+                if(topDot) topDot.style.color = '#10b981';
                 if(bottomBadge) {
                     bottomBadge.className = 'status-bottom-indicator online';
                     bottomBadge.innerText = `Online (@${username})`;
                 }
             } else {
-                if(topDot) topDot.style.color = '#8e8e93';
+                if(topDot) topDot.style.color = '#9ca3af';
                 if(bottomBadge) {
                     bottomBadge.className = 'status-bottom-indicator';
                     bottomBadge.innerText = 'Offline / Disconnected';
@@ -985,7 +1227,6 @@
             const avatarEl = document.getElementById('botAvatarBig');
             avatarEl.innerText = bot.first_name.charAt(0).toUpperCase();
             
-            // Attempt to load bot's actual profile photo via Telegram API
             try {
                 const chatRes = await apiCall('getChat', { chat_id: bot.id });
                 if (chatRes.ok && chatRes.result.photo) {
@@ -1000,7 +1241,7 @@
             }
 
             updateStatusDisplay(true, bot.username);
-            openView('view-main', 'Settings');
+            openView('view-main', 'ADMINBOT Pro');
             fetchBotDetails();
             log(`Active Bot Connected: @${bot.username} (Secured by Arsham)`, 'info');
         }
@@ -1054,18 +1295,13 @@
             }
         }
 
-        // Logo & GIF Studio Functions
         function updateLogoPreview() {
             const textInput = document.getElementById('logoText').value.trim() || 'BOT';
             const theme = document.getElementById('logoTheme').value;
             const preview = document.getElementById('logoCanvasPreview');
             
             preview.innerText = textInput.substring(0, 3).toUpperCase();
-            if (theme.startsWith('linear-gradient')) {
-                preview.style.background = theme;
-            } else {
-                preview.style.background = theme;
-            }
+            preview.style.background = theme;
         }
 
         function downloadGeneratedLogo() {
@@ -1094,13 +1330,12 @@
                     const avatarEl = document.getElementById('botAvatarBig');
                     avatarEl.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
                     log('Bot avatar updated locally.', 'info');
-                    alert('Bot avatar updated! (Note: Actual Telegram bot avatars must be updated via @BotFather or Telegram API).');
+                    alert('Bot avatar updated locally!');
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        /* Custom Menu Builder Logic */
         function addCustomMenuButton() {
             const text = sanitizeHTML(document.getElementById('menuButtonText').value.trim());
             const callback = sanitizeHTML(document.getElementById('menuButtonCallback').value.trim());
@@ -1125,20 +1360,18 @@
                 return;
             }
             list.innerHTML = '';
-            customMenuItems.forEach((item, idx) => {
+            customMenuItems.forEach((item) => {
                 const btnDiv = document.createElement('div');
-                btnDiv.style.cssText = 'background: rgba(10,132,255,0.15); color: var(--tg-blue); padding: 8px 12px; border-radius: 8px; margin: 4px 0; font-weight: 500; display: flex; justify-content: space-between; align-items: center;';
+                btnDiv.style.cssText = 'background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: var(--tg-blue); padding: 10px 14px; border-radius: 12px; margin: 6px 0; font-weight: 500; display: flex; justify-content: space-between; align-items: center;';
                 btnDiv.innerHTML = `<span>${item.text}</span> <span style="font-size:11px; color:var(--tg-subtext);">${item.callback}</span>`;
                 list.appendChild(btnDiv);
             });
         }
 
-        /* Bot Settings Toggles */
         function toggleJoinGroups() { log('Toggled Group Join Mode', 'info'); }
         function togglePrivacyMode() { log('Toggled Privacy Mode', 'info'); }
         function toggleInlineMode() { log('Toggled Inline Mode', 'info'); }
 
-        /* Commands Management */
         async function addSingleCommand() {
             const name = sanitizeHTML(document.getElementById('cmdName').value.trim().toLowerCase());
             const desc = sanitizeHTML(document.getElementById('cmdDesc').value.trim());
@@ -1160,7 +1393,6 @@
             }
         }
 
-        /* Web App Settings */
         async function saveWebAppSetting() {
             const url = document.getElementById('webAppUrlInput').value.trim();
             if (!url.startsWith('https://')) return alert('URL must start with https://');
@@ -1178,7 +1410,6 @@
             }
         }
 
-        /* Broadcasting */
         async function sendBroadcastPost() {
             const text = sanitizeHTML(document.getElementById('broadcastText').value.trim());
             const chatId = sanitizeHTML(document.getElementById('targetChatId').value.trim());
@@ -1198,7 +1429,6 @@
             }
         }
 
-        /* Health Check */
         async function runHealthCheck() {
             log('Checking webhook status & security...', 'info');
             try {
