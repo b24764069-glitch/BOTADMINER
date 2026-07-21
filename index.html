@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BotFather Pro - Telegram Mini App</title>
+    <title>ADMINBOT Pro</title>
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <!-- FontAwesome Icons -->
@@ -85,15 +85,14 @@
             margin: 0 auto;
         }
 
-        /* Onboarding Connect View */
-        #connect-overlay {
+        /* Onboarding / Bot Selection View */
+        #bot-selection-screen {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 80vh;
-            text-align: center;
-            padding: 24px;
+            padding: 12px 0;
         }
 
         .app-icon {
@@ -106,8 +105,43 @@
             justify-content: center;
             font-size: 36px;
             color: white;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             box-shadow: 0 10px 25px rgba(10, 132, 255, 0.3);
+        }
+
+        .bot-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--ios-card-secondary);
+            border-radius: var(--button-radius);
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
+        }
+
+        .bot-list-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .bot-info-short {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mini-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--ios-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
         }
 
         /* Tab Content Control */
@@ -125,6 +159,7 @@
             padding: 16px;
             margin-bottom: 16px;
             border: 0.5px solid rgba(255, 255, 255, 0.08);
+            width: 100%;
         }
 
         .card-title {
@@ -321,7 +356,6 @@
             font-weight: 500;
         }
 
-        /* Badge Pills */
         .pill {
             display: inline-block;
             padding: 3px 8px;
@@ -331,17 +365,13 @@
             background: rgba(255,255,255,0.1);
             color: var(--ios-subtext);
         }
-        .pill.active {
-            background: rgba(48, 209, 88, 0.2);
-            color: var(--ios-green);
-        }
     </style>
 </head>
 <body>
 
     <!-- Main App Header -->
     <div class="ios-header">
-        <h1>BotFather Pro</h1>
+        <h1>ADMINBOT Pro</h1>
         <div class="status-badge" id="statusBadge">
             <i class="fa-solid fa-circle" style="font-size: 7px;"></i>
             <span id="statusText">Disconnected</span>
@@ -350,34 +380,47 @@
 
     <div class="container">
 
-        <!-- ==================== ONBOARDING: CONNECT BOT ==================== -->
-        <div id="connect-overlay">
+        <!-- ==================== SECTION 1: BOT SELECTOR & ADD BOT ==================== -->
+        <div id="bot-selection-screen">
             <div class="app-icon">
-                <i class="fa-solid fa-robot"></i>
+                <i class="fa-solid fa-shield-halved"></i>
             </div>
-            <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 8px;">Connect Your Bot</h2>
-            <p style="font-size: 14px; color: var(--ios-subtext); margin-bottom: 24px; max-width: 320px;">
-                Enter your Telegram Bot Token from @BotFather to unlock full control, bug diagnostics, and UI customization.
+            <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 6px;">ADMINBOT Pro</h2>
+            <p style="font-size: 14px; color: var(--ios-subtext); margin-bottom: 20px; text-align: center; max-width: 320px;">
+                Select an existing bot or add a new bot token to manage.
             </p>
 
-            <div class="card" style="width: 100%;">
+            <!-- Saved Bots List Card -->
+            <div class="card" id="savedBotsCard" style="display: none;">
+                <div class="card-title"><i class="fa-solid fa-list"></i> Select Saved Bot</div>
+                <div id="savedBotsContainer"></div>
+            </div>
+
+            <!-- Add New Bot Form Card -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-plus"></i> Add New Bot</div>
                 <div class="input-group">
-                    <label>Bot API Token:</label>
-                    <input type="text" id="botTokenInput" class="ios-input" placeholder="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ">
+                    <label>Bot API Token (from @BotFather):</label>
+                    <input type="text" id="newBotTokenInput" class="ios-input" placeholder="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ">
                 </div>
-                <button class="btn" onclick="connectBot()">
-                    <i class="fa-solid fa-plug"></i> Connect & Launch Panel
+                <button class="btn" onclick="addNewBot()">
+                    <i class="fa-solid fa-plug"></i> Connect & Save Bot
                 </button>
             </div>
         </div>
 
-        <!-- ==================== MAIN DASHBOARD (HIDDEN UNTIL CONNECTED) ==================== -->
+        <!-- ==================== MAIN DASHBOARD (HIDDEN UNTIL BOT SELECTED) ==================== -->
         <div id="main-panel" style="display: none;">
 
-            <!-- TAB 1: OVERVIEW & BOTFATHER SETTINGS -->
+            <!-- TAB 1: OVERVIEW & BOT CONTROL -->
             <div id="tab-dash" class="tab-content active">
-                <div class="card" id="botDetailsCard">
-                    <div class="card-title"><i class="fa-solid fa-circle-info"></i> Bot Overview</div>
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div class="card-title" style="margin-bottom: 0;"><i class="fa-solid fa-circle-info"></i> Bot Overview</div>
+                        <button class="btn btn-secondary" onclick="switchBotView()" style="width: auto; padding: 6px 12px; font-size: 12px;">
+                            <i class="fa-solid fa-arrows-rotate"></i> Switch Bot
+                        </button>
+                    </div>
                     <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
                         <div class="avatar" id="botAvatar"><i class="fa-solid fa-robot"></i></div>
                         <div>
@@ -393,27 +436,27 @@
                     </div>
                 </div>
 
-                <!-- BotFather Edit Controls -->
+                <!-- Bot Settings (Name, Description) -->
                 <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-pen-to-square"></i> Edit Bot Details (BotFather)</div>
+                    <div class="card-title"><i class="fa-solid fa-pen-to-square"></i> Edit Bot Details</div>
                     
                     <div class="input-group">
-                        <label>Bot Name:</label>
-                        <input type="text" id="editBotName" class="ios-input" placeholder="My Awesome Bot">
+                        <label>Bot Display Name:</label>
+                        <input type="text" id="editBotName" class="ios-input" placeholder="My Bot Name">
                     </div>
 
                     <div class="input-group">
-                        <label>Short Description (About / Share Preview):</label>
-                        <input type="text" id="editShortDesc" class="ios-input" placeholder="A brief summary shown in chat profiles...">
+                        <label>Short Description (Profile Summary):</label>
+                        <input type="text" id="editShortDesc" class="ios-input" placeholder="Short description...">
                     </div>
 
                     <div class="input-group">
-                        <label>Full Description (What can this bot do?):</label>
-                        <textarea id="editFullDesc" class="ios-textarea" placeholder="This text is shown when users open a new chat with your bot..."></textarea>
+                        <label>Full Description (Start Page Text):</label>
+                        <textarea id="editFullDesc" class="ios-textarea" placeholder="Full description text..."></textarea>
                     </div>
 
                     <button class="btn" onclick="updateBotProfileDetails()">
-                        <i class="fa-solid fa-floppy-disk"></i> Save Bot Details
+                        <i class="fa-solid fa-floppy-disk"></i> Save Bot Profile
                     </button>
                 </div>
             </div>
@@ -421,13 +464,9 @@
             <!-- TAB 2: COMMANDS & MENU BUTTON -->
             <div id="tab-commands" class="tab-content">
                 <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-terminal"></i> Bot Menu Commands</div>
-                    <p style="font-size: 13px; color: var(--ios-subtext); margin-bottom: 12px;">
-                        Set options for the command menu button in user chats (`/start`, `/help`, etc.).
-                    </p>
-                    
+                    <div class="card-title"><i class="fa-solid fa-terminal"></i> Bot Commands Menu</div>
                     <div class="input-group">
-                        <label>Command (English without /):</label>
+                        <label>Command (without /):</label>
                         <input type="text" id="cmdName" class="ios-input" placeholder="start">
                     </div>
                     <div class="input-group">
@@ -436,16 +475,15 @@
                     </div>
                     
                     <button class="btn btn-secondary" onclick="addSingleCommand()" style="margin-bottom: 8px;">
-                        <i class="fa-solid fa-plus"></i> Register Command to Menu
+                        <i class="fa-solid fa-plus"></i> Add Command
                     </button>
                     <button class="btn btn-danger" onclick="clearAllCommands()">
                         <i class="fa-solid fa-trash"></i> Delete All Commands
                     </button>
                 </div>
 
-                <!-- Menu Button Config -->
                 <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-bars"></i> Chat Menu Button Behavior</div>
+                    <div class="card-title"><i class="fa-solid fa-bars"></i> Chat Menu Button</div>
                     <div class="input-group">
                         <label>Menu Button Mode:</label>
                         <select id="menuButtonType" class="ios-select" onchange="toggleMenuUrlInput()">
@@ -466,10 +504,10 @@
             <!-- TAB 3: WELCOME & BUTTON BUILDER -->
             <div id="tab-buttons" class="tab-content">
                 <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-comment-dots"></i> Welcome Message Configuration</div>
+                    <div class="card-title"><i class="fa-solid fa-comment-dots"></i> Custom Welcome Reply</div>
                     <div class="input-group">
-                        <label>Custom /start Reply Text:</label>
-                        <textarea id="welcomeMessageText" class="ios-textarea" placeholder="Welcome to our Bot! Tap a button below to get started."></textarea>
+                        <label>Welcome Message Text:</label>
+                        <textarea id="welcomeMessageText" class="ios-textarea" placeholder="Welcome to our bot!"></textarea>
                     </div>
                     <button class="btn" onclick="saveWelcomeMessage()">
                         <i class="fa-solid fa-check"></i> Save Welcome Text
@@ -477,53 +515,50 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-cubes"></i> Inline Glass Button Builder</div>
+                    <div class="card-title"><i class="fa-solid fa-cubes"></i> Inline Keyboard Builder</div>
                     <div class="input-group">
-                        <label>Button Label:</label>
-                        <input type="text" id="btnTitle" class="ios-input" placeholder="🌐 Visit Website">
+                        <label>Button Title:</label>
+                        <input type="text" id="btnTitle" class="ios-input" placeholder="🌐 Open Website">
                     </div>
                     <div class="input-group">
                         <label>URL or Callback Data:</label>
-                        <input type="text" id="btnData" class="ios-input" placeholder="https://telegram.org">
+                        <input type="text" id="btnData" class="ios-input" placeholder="https://example.com">
                     </div>
                     <button class="btn btn-secondary" onclick="addCustomButtonPreview()">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> Add Button to Preview Grid
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Add Button Preview
                     </button>
 
                     <div style="margin-top: 16px;">
                         <label style="font-size: 12px; color: var(--ios-subtext);">iOS Glass Keyboard Preview:</label>
                         <div class="button-grid-preview" id="buttonPreviewGrid">
-                            <div class="preview-btn">Button 1</div>
-                            <div class="preview-btn">Button 2</div>
+                            <div class="preview-btn">Sample Button 1</div>
+                            <div class="preview-btn">Sample Button 2</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 4: HEALTH, BUG & LOG INSPECTOR -->
+            <!-- TAB 4: BUG & HEALTH INSPECTOR -->
             <div id="tab-health" class="tab-content">
                 <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-bug"></i> Webhook & Bug Inspector</div>
-                    <p style="font-size: 13px; color: var(--ios-subtext); margin-bottom: 12px;">
-                        Inspect active webhooks, server errors, and pending update queues.
-                    </p>
+                    <div class="card-title"><i class="fa-solid fa-bug"></i> Webhook & Bug Diagnostic</div>
                     <button class="btn btn-success" onclick="runHealthCheck()" style="margin-bottom: 8px;">
-                        <i class="fa-solid fa-stethoscope"></i> Run Diagnostic Test
+                        <i class="fa-solid fa-stethoscope"></i> Inspect Webhook & Health
                     </button>
                     <button class="btn btn-danger" onclick="deleteBotWebhook()">
-                        <i class="fa-solid fa-link-slash"></i> Clear Active Webhook
+                        <i class="fa-solid fa-link-slash"></i> Remove Active Webhook
                     </button>
                 </div>
 
                 <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-terminal"></i> Live Event Logs</div>
+                    <div class="card-title"><i class="fa-solid fa-terminal"></i> Live Activity Logs</div>
                     <div class="log-box" id="logConsole">
-                        <div class="log-item info">[System]: Mini App Initialized.</div>
+                        <div class="log-item info">[ADMINBOT Pro]: Panel Initialized.</div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 5: USER PROFILE & APP SETTINGS -->
+            <!-- TAB 5: PROFILE & SETTINGS -->
             <div id="tab-profile" class="tab-content">
                 <div class="card">
                     <div class="profile-header">
@@ -537,15 +572,15 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-gear"></i> Account & Session</div>
-                    <button class="btn btn-secondary" style="margin-bottom: 8px;" onclick="disconnectBot()">
-                        <i class="fa-solid fa-right-from-bracket"></i> Switch / Disconnect Bot
+                    <div class="card-title"><i class="fa-solid fa-gear"></i> Account & App Controls</div>
+                    <button class="btn btn-secondary" style="margin-bottom: 8px;" onclick="switchBotView()">
+                        <i class="fa-solid fa-robot"></i> Switch Active Bot
                     </button>
                     <button class="btn btn-secondary" style="margin-bottom: 8px;" onclick="Telegram.WebApp.close()">
                         <i class="fa-solid fa-xmark"></i> Close Mini App
                     </button>
                     <button class="btn btn-danger" onclick="clearAllData()">
-                        <i class="fa-solid fa-trash"></i> Reset All Stored Settings
+                        <i class="fa-solid fa-trash"></i> Clear All Stored Bots & Data
                     </button>
                 </div>
             </div>
@@ -554,7 +589,7 @@
 
     </div>
 
-    <!-- Bottom Navigation Bar (Hidden until connected) -->
+    <!-- Bottom Navigation Bar -->
     <div class="navbar" id="bottomNavbar" style="display: none;">
         <div class="nav-item active" onclick="switchTab('tab-dash', this)">
             <i class="fa-solid fa-gauge-high"></i>
@@ -582,6 +617,7 @@
         // Init Telegram WebApp SDK
         const tg = window.Telegram?.WebApp;
         let activeToken = '';
+        let botList = []; // Array of saved bots: [{ name, username, id, token }]
 
         document.addEventListener('DOMContentLoaded', () => {
             if (tg) {
@@ -589,12 +625,12 @@
                 tg.expand();
                 initUserProfile();
             }
-            checkSavedSession();
+            loadSavedBots();
         });
 
-        // Safe Helper for Calling Telegram Bot API
+        // Safe Telegram API Call Helper
         async function apiCall(method, payload = null) {
-            if (!activeToken) throw new Error('No bot token set.');
+            if (!activeToken) throw new Error('No active bot selected.');
             const url = `https://api.telegram.org/bot${activeToken}/${method}`;
             
             const options = {
@@ -607,7 +643,7 @@
             return await res.json();
         }
 
-        // Initialize User Profile from Telegram WebApp SDK
+        // Init Telegram User Profile
         function initUserProfile() {
             if (tg?.initDataUnsafe?.user) {
                 const user = tg.initDataUnsafe.user;
@@ -615,10 +651,148 @@
                 document.getElementById('userId').innerText = `ID: ${user.id}`;
                 document.getElementById('userUsername').innerText = user.username ? `@${user.username}` : 'No Username';
                 document.getElementById('userAvatar').innerText = (user.first_name || 'U').charAt(0).toUpperCase();
-                log(`Connected as Telegram User: ${user.first_name} (${user.id})`, 'info');
-            } else {
-                log('Running in browser mode outside Telegram SDK.', 'warn');
             }
+        }
+
+        // Load Bots List from Storage
+        function loadSavedBots() {
+            const stored = localStorage.getItem('adminbot_saved_bots');
+            botList = stored ? JSON.parse(stored) : [];
+            renderBotList();
+        }
+
+        function saveBotsToStorage() {
+            localStorage.setItem('adminbot_saved_bots', JSON.stringify(botList));
+        }
+
+        // Render List of Saved Bots in Section 1
+        function renderBotList() {
+            const container = document.getElementById('savedBotsContainer');
+            const card = document.getElementById('savedBotsCard');
+            container.innerHTML = '';
+
+            if (botList.length === 0) {
+                card.style.display = 'none';
+                return;
+            }
+
+            card.style.display = 'block';
+            botList.forEach((bot, index) => {
+                const item = document.createElement('div');
+                item.className = 'bot-list-item';
+                item.innerHTML = `
+                    <div class="bot-info-short" onclick="selectBot(${index})">
+                        <div class="mini-avatar">${bot.name.charAt(0).toUpperCase()}</div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 14px;">${bot.name}</div>
+                            <div style="font-size: 12px; color: var(--ios-subtext);">@${bot.username}</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" style="width: auto; padding: 6px 10px; font-size: 11px;" onclick="removeBot(event, ${index})">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Add a New Bot by Token
+        async function addNewBot() {
+            const tokenInput = document.getElementById('newBotTokenInput').value.trim();
+            if (!tokenInput) {
+                alert('Please enter a valid Telegram Bot Token.');
+                return;
+            }
+
+            try {
+                activeToken = tokenInput;
+                const data = await apiCall('getMe');
+
+                if (data.ok) {
+                    const bot = data.result;
+                    const exists = botList.some(b => b.token === tokenInput);
+
+                    if (!exists) {
+                        const newBot = {
+                            name: bot.first_name,
+                            username: bot.username,
+                            id: bot.id,
+                            token: tokenInput
+                        };
+                        botList.push(newBot);
+                        saveBotsToStorage();
+                    }
+
+                    document.getElementById('newBotTokenInput').value = '';
+                    activateBotDashboard(bot);
+                } else {
+                    throw new Error(data.description || 'Invalid Bot Token.');
+                }
+            } catch (err) {
+                activeToken = '';
+                alert(`Error: ${err.message}`);
+            }
+        }
+
+        // Select an existing Bot from the list
+        async function selectBot(index) {
+            const selected = botList[index];
+            if (!selected) return;
+
+            activeToken = selected.token;
+            try {
+                const data = await apiCall('getMe');
+                if (data.ok) {
+                    activateBotDashboard(data.result);
+                } else {
+                    throw new Error('Token expired or invalid.');
+                }
+            } catch (err) {
+                alert(`Error connecting to bot: ${err.message}`);
+            }
+        }
+
+        // Remove Bot from Saved List
+        function removeBot(event, index) {
+            event.stopPropagation();
+            if (confirm(`Remove ${botList[index].name} from saved list?`)) {
+                botList.splice(index, 1);
+                saveBotsToStorage();
+                renderBotList();
+            }
+        }
+
+        // Activate Main Panel for selected Bot
+        function activateBotDashboard(bot) {
+            document.getElementById('statusBadge').classList.add('online');
+            document.getElementById('statusText').innerText = 'Online';
+
+            document.getElementById('botNameDisplay').innerText = bot.first_name;
+            document.getElementById('botUsernameDisplay').innerText = `@${bot.username}`;
+            document.getElementById('botIdDisplay').innerText = `ID: ${bot.id}`;
+            document.getElementById('botAvatar').innerText = bot.first_name.charAt(0).toUpperCase();
+
+            document.getElementById('pillJoinGroups').innerText = `Groups: ${bot.can_join_groups ? 'Yes' : 'No'}`;
+            document.getElementById('pillReadPrivacy').innerText = `Privacy: ${bot.can_read_all_group_messages ? 'Disabled' : 'Enabled'}`;
+            document.getElementById('pillInline').innerText = `Inline: ${bot.supports_inline_queries ? 'Yes' : 'No'}`;
+
+            document.getElementById('bot-selection-screen').style.display = 'none';
+            document.getElementById('main-panel').style.display = 'block';
+            document.getElementById('bottomNavbar').style.display = 'flex';
+
+            fetchBotDetails();
+            log(`Active Bot: @${bot.username}`, 'info');
+        }
+
+        // Switch back to Bot Selection View
+        function switchBotView() {
+            activeToken = '';
+            document.getElementById('statusBadge').classList.remove('online');
+            document.getElementById('statusText').innerText = 'Disconnected';
+            document.getElementById('main-panel').style.display = 'none';
+            document.getElementById('bottomNavbar').style.display = 'none';
+            document.getElementById('bot-selection-screen').style.display = 'flex';
+            renderBotList();
         }
 
         // Tab Navigation
@@ -634,7 +808,7 @@
             }
         }
 
-        // Append Message to Log Console
+        // Logger
         function log(msg, type = '') {
             const consoleBox = document.getElementById('logConsole');
             const item = document.createElement('div');
@@ -644,61 +818,7 @@
             consoleBox.scrollTop = consoleBox.scrollHeight;
         }
 
-        // Connect Bot via Token
-        async function connectBot() {
-            const tokenInput = document.getElementById('botTokenInput').value.trim();
-            if (!tokenInput) {
-                alert('Please enter a valid Bot Token.');
-                return;
-            }
-
-            log('Validating Bot Token with Telegram API...', 'info');
-
-            try {
-                activeToken = tokenInput;
-                const data = await apiCall('getMe');
-
-                if (data.ok) {
-                    const bot = data.result;
-                    localStorage.setItem('bot_token', activeToken);
-
-                    // Update UI Status
-                    document.getElementById('statusBadge').classList.add('online');
-                    document.getElementById('statusText').innerText = 'Online';
-
-                    // Update Overview Tab
-                    document.getElementById('botNameDisplay').innerText = bot.first_name;
-                    document.getElementById('botUsernameDisplay').innerText = `@${bot.username}`;
-                    document.getElementById('botIdDisplay').innerText = `ID: ${bot.id}`;
-                    document.getElementById('botAvatar').innerText = bot.first_name.charAt(0).toUpperCase();
-
-                    // Capability Pills
-                    document.getElementById('pillJoinGroups').innerText = `Groups: ${bot.can_join_groups ? 'Yes' : 'No'}`;
-                    document.getElementById('pillReadPrivacy').innerText = `Privacy: ${bot.can_read_all_group_messages ? 'Disabled' : 'Enabled'}`;
-                    document.getElementById('pillInline').innerText = `Inline: ${bot.supports_inline_queries ? 'Yes' : 'No'}`;
-
-                    // Show Main UI, Hide Onboarding
-                    document.getElementById('connect-overlay').style.display = 'none';
-                    document.getElementById('main-panel').style.display = 'block';
-                    document.getElementById('bottomNavbar').style.display = 'flex';
-
-                    // Populate Existing Details
-                    fetchBotDetails();
-
-                    log(`Successfully connected to @${bot.username}`, 'info');
-                    if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                } else {
-                    throw new Error(data.description || 'Failed to fetch bot details.');
-                }
-            } catch (err) {
-                activeToken = '';
-                log(`Connection Error: ${err.message}`, 'error');
-                alert(`Error: ${err.message}`);
-                if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-            }
-        }
-
-        // Fetch Existing Bot Descriptions & Short Description
+        // Fetch Current Bot Details
         async function fetchBotDetails() {
             try {
                 const [nameRes, shortRes, fullRes] = await Promise.all([
@@ -711,17 +831,15 @@
                 if (shortRes.ok) document.getElementById('editShortDesc').value = shortRes.result.short_description || '';
                 if (fullRes.ok) document.getElementById('editFullDesc').value = fullRes.result.description || '';
             } catch (err) {
-                log(`Failed to prefetch bot details: ${err.message}`, 'warn');
+                log(`Failed to prefetch bot profile: ${err.message}`, 'warn');
             }
         }
 
-        // Update Bot Profile (BotFather Actions)
+        // Update Bot Profile
         async function updateBotProfileDetails() {
             const name = document.getElementById('editBotName').value.trim();
             const shortDesc = document.getElementById('editShortDesc').value.trim();
             const fullDesc = document.getElementById('editFullDesc').value.trim();
-
-            log('Updating Bot details...', 'info');
 
             try {
                 const resName = await apiCall('setMyName', { name });
@@ -729,63 +847,52 @@
                 const resFull = await apiCall('setMyDescription', { description: fullDesc });
 
                 if (resName.ok && resShort.ok && resFull.ok) {
-                    log('Bot Profile Details updated successfully on Telegram servers.', 'info');
-                    alert('Bot details updated successfully!');
-                    if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                } else {
-                    log('One or more fields failed to update.', 'error');
+                    log('Bot profile updated successfully.', 'info');
+                    alert('Bot details updated!');
                 }
             } catch (err) {
                 log(`Update error: ${err.message}`, 'error');
             }
         }
 
-        // Add Menu Command
+        // Commands Management
         async function addSingleCommand() {
             const name = document.getElementById('cmdName').value.trim().toLowerCase();
             const desc = document.getElementById('cmdDesc').value.trim();
 
-            if (!name || !desc) {
-                alert('Please fill out both command name and description.');
-                return;
-            }
+            if (!name || !desc) return alert('Please enter command name and description.');
 
             try {
-                // Fetch current commands first to append
                 const current = await apiCall('getMyCommands');
                 const commands = current.ok ? current.result : [];
-                
                 commands.push({ command: name, description: desc });
 
                 const res = await apiCall('setMyCommands', { commands });
                 if (res.ok) {
-                    log(`Command /${name} registered successfully.`, 'info');
+                    log(`Added command /${name}`, 'info');
                     alert(`Command /${name} added!`);
                     document.getElementById('cmdName').value = '';
                     document.getElementById('cmdDesc').value = '';
-                } else {
-                    log(`Failed to add command: ${res.description}`, 'error');
                 }
             } catch (err) {
-                log(`Error setting command: ${err.message}`, 'error');
+                log(`Command error: ${err.message}`, 'error');
             }
         }
 
-        // Clear Commands
         async function clearAllCommands() {
-            if (!confirm('Are you sure you want to clear all bot menu commands?')) return;
+            if (!confirm('Clear all commands?')) return;
             try {
                 const res = await apiCall('deleteMyCommands');
                 if (res.ok) {
-                    log('All menu commands cleared.', 'info');
-                    alert('Menu commands deleted!');
+                    log('Commands cleared.', 'info');
+                    alert('All commands deleted.');
                 }
             } catch (err) {
-                log(`Failed to clear commands: ${err.message}`, 'error');
+                log(`Error: ${err.message}`, 'error');
             }
         }
 
-        // Menu Button Handler
+        // Menu Button
         function toggleMenuUrlInput() {
             const type = document.getElementById('menuButtonType').value;
             document.getElementById('menuUrlGroup').style.display = type === 'web_app' ? 'block' : 'none';
@@ -797,76 +904,64 @@
 
             if (type === 'web_app') {
                 const url = document.getElementById('menuAppUrl').value.trim();
-                if (!url.startsWith('https://')) {
-                    alert('Mini App URL must start with https://');
-                    return;
-                }
-                menuButton = {
-                    type: 'web_app',
-                    text: 'Open App',
-                    web_app: { url }
-                };
+                if (!url.startsWith('https://')) return alert('URL must start with https://');
+                menuButton = { type: 'web_app', text: 'Open App', web_app: { url } };
             }
 
             try {
                 const res = await apiCall('setChatMenuButton', { menu_button: menuButton });
                 if (res.ok) {
-                    log('Chat Menu Button updated.', 'info');
-                    alert('Menu button updated!');
-                } else {
-                    log(`Menu Button error: ${res.description}`, 'error');
+                    log('Menu Button updated.', 'info');
+                    alert('Menu Button updated!');
                 }
             } catch (err) {
-                log(`Error updating Menu Button: ${err.message}`, 'error');
+                log(`Menu Button error: ${err.message}`, 'error');
             }
         }
 
-        // Health Diagnostic (Bug Inspector)
+        // Webhook Health Inspector
         async function runHealthCheck() {
-            log('Diagnosing Webhook & API Health...', 'info');
+            log('Inspecting Webhook status...', 'info');
             try {
                 const res = await apiCall('getWebhookInfo');
                 if (res.ok) {
                     const info = res.result;
-                    log(`Webhook Status: ${info.url ? 'Active -> ' + info.url : 'Not Set (Polling Mode)'}`, 'info');
-                    log(`Pending Updates Count: ${info.pending_update_count}`, 'info');
+                    log(`Webhook URL: ${info.url || 'None (Polling Mode)'}`, 'info');
+                    log(`Pending Updates: ${info.pending_update_count}`, 'info');
 
                     if (info.last_error_date) {
                         const dateStr = new Date(info.last_error_date * 1000).toLocaleString();
-                        log(`[BUG DETECTED]: ${info.last_error_message} (Occurred: ${dateStr})`, 'error');
+                        log(`[BUG]: ${info.last_error_message} (${dateStr})`, 'error');
                     } else {
-                        log('No server delivery bugs or errors reported recently.', 'info');
+                        log('No recent errors found.', 'info');
                     }
                 }
             } catch (err) {
-                log(`Health Check Error: ${err.message}`, 'error');
+                log(`Diagnostic error: ${err.message}`, 'error');
             }
         }
 
-        // Delete Webhook
         async function deleteBotWebhook() {
-            if (!confirm('Clear active webhook?')) return;
+            if (!confirm('Delete Webhook?')) return;
             try {
                 const res = await apiCall('deleteWebhook', { drop_pending_updates: true });
                 if (res.ok) {
-                    log('Webhook deleted and pending updates dropped.', 'warn');
+                    log('Webhook removed.', 'warn');
                     alert('Webhook deleted!');
                 }
             } catch (err) {
-                log(`Error deleting webhook: ${err.message}`, 'error');
+                log(`Error: ${err.message}`, 'error');
             }
         }
 
-        // Save Welcome Text Local Mock
         function saveWelcomeMessage() {
             const text = document.getElementById('welcomeMessageText').value;
-            if (!text) return alert('Please write a welcome text.');
-            localStorage.setItem('welcome_text', text);
-            log('Welcome message text saved locally.', 'info');
+            if (!text) return alert('Enter welcome message.');
+            localStorage.setItem(`welcome_${activeToken}`, text);
+            log('Welcome text saved locally.', 'info');
             alert('Welcome message saved!');
         }
 
-        // Add Button Preview Item
         function addCustomButtonPreview() {
             const title = document.getElementById('btnTitle').value;
             if (!title) return;
@@ -878,33 +973,11 @@
             grid.appendChild(btn);
 
             document.getElementById('btnTitle').value = '';
-            log(`Added button "${title}" to preview keyboard grid.`, 'info');
+            log(`Added button preview: ${title}`, 'info');
         }
 
-        // Session Check
-        function checkSavedSession() {
-            const savedToken = localStorage.getItem('bot_token');
-            if (savedToken) {
-                document.getElementById('botTokenInput').value = savedToken;
-                connectBot();
-            }
-        }
-
-        // Disconnect Session
-        function disconnectBot() {
-            activeToken = '';
-            localStorage.removeItem('bot_token');
-            document.getElementById('statusBadge').classList.remove('online');
-            document.getElementById('statusText').innerText = 'Disconnected';
-            document.getElementById('connect-overlay').style.display = 'flex';
-            document.getElementById('main-panel').style.display = 'none';
-            document.getElementById('bottomNavbar').style.display = 'none';
-            log('Bot session disconnected.', 'warn');
-        }
-
-        // Clear All App Data
         function clearAllData() {
-            if (confirm('Reset all saved settings and clear session?')) {
+            if (confirm('Delete all saved bots and app data?')) {
                 localStorage.clear();
                 location.reload();
             }
