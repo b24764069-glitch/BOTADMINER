@@ -38,7 +38,7 @@
             user-select: none;
             overflow-x: hidden;
             font-size: 17px;
-            padding-bottom: 100px;
+            padding-bottom: 120px;
         }
 
         /* 📱 Telegram iOS Header */
@@ -381,47 +381,48 @@
             letter-spacing: 0.5px;
         }
 
-        /* 🔻 Bottom Center Back Button Container (Requested by User) */
+        /* 🔻 Bottom Center Back Button Container (Strictly Center & Professional) */
         .bottom-back-container {
             position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(0);
             display: flex;
             justify-content: center;
             z-index: 999;
-            pointer-events: none;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: auto;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .bottom-back-container.hidden {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateX(-50%) translateY(30px);
             pointer-events: none;
         }
         .bottom-back-btn {
-            pointer-events: auto;
-            background: linear-gradient(135deg, #1f2937, #111827);
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
             color: var(--tg-text);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 12px 28px;
-            border-radius: 30px;
-            font-size: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 13px 32px;
+            border-radius: 35px;
+            font-size: 16px;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(59, 130, 246, 0.2);
+            gap: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(59, 130, 246, 0.35);
             cursor: pointer;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .bottom-back-btn:active {
             transform: scale(0.95);
             background: #374151;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8), 0 0 10px rgba(59, 130, 246, 0.2);
         }
         .bottom-back-btn i {
-            color: var(--tg-blue);
+            color: var(--tg-cyan);
+            font-size: 15px;
         }
 
         /* Page Headers */
@@ -430,15 +431,18 @@
             padding: 24px 16px 16px;
         }
         .page-icon-header svg {
-            width: 54px;
-            height: 54px;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.4));
+            width: 64px;
+            height: 64px;
+            margin-bottom: 14px;
+            filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.45));
         }
         .page-icon-header h2 {
-            font-size: 22px;
-            font-weight: 700;
+            font-size: 24px;
+            font-weight: 800;
             margin-bottom: 6px;
+            background: linear-gradient(135deg, #ffffff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .page-icon-header p {
             font-size: 14px;
@@ -693,7 +697,18 @@
 
     <!-- ==================== 3. EDIT INFO ==================== -->
     <div id="view-edit-info" class="app-view">
-        <div style="text-align: center; margin-top: 20px;">
+        <div class="page-icon-header">
+            <!-- Custom Unique Section Logo: Edit Info -->
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <path d="M180 256h152M256 180v152" stroke="url(#electricGlow)" stroke-width="32" stroke-linecap="round"/>
+                <circle cx="256" cy="256" r="140" fill="none" stroke="url(#electricGlow)" stroke-width="12" stroke-dasharray="20 15"/>
+            </svg>
+            <h2>Edit Info & Profile</h2>
+            <p>Customize your bot profile, name, description and welcome screen.</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 10px;">
             <div class="bot-avatar-large" id="botAvatarBig">A</div>
             <div class="bot-avatar-badge" onclick="document.getElementById('botPhotoUpload').click()"><i class="fa-solid fa-camera"></i> Change Bot Avatar</div>
             <input type="file" id="botPhotoUpload" style="display: none;" accept="image/*" onchange="handleBotPhotoUpload(event)">
@@ -731,9 +746,12 @@
     <!-- ==================== 4. LOGO & GIF STUDIO ==================== -->
     <div id="view-logo-maker" class="app-view">
         <div class="page-icon-header">
-            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            </div>
+            <!-- Custom Unique Section Logo: Logo Studio -->
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <path d="M160 352l32-96L352 128l64 64-160 160-96 32z" fill="none" stroke="url(#electricGlow)" stroke-width="28" stroke-linejoin="round"/>
+                <circle cx="360" cy="152" r="24" fill="#06B6D4"/>
+            </svg>
             <h2>Logo & GIF Studio</h2>
             <p>Create or generate custom avatars, logos, or animated GIFs for your bot.</p>
         </div>
@@ -778,9 +796,11 @@
     <!-- ==================== 5. COMMANDS ==================== -->
     <div id="view-commands" class="app-view">
         <div class="page-icon-header">
-            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-            </div>
+            <!-- Custom Unique Section Logo: Commands -->
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <path d="M140 160l100 96-100 96M290 352h100" fill="none" stroke="url(#electricGlow)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             <h2>Commands</h2>
             <p>A command is a simple /keyword that tells the bot what to do. <a href="#">Read more ></a></p>
         </div>
@@ -818,9 +838,11 @@
     <!-- ==================== 6. CUSTOM MENU BUILDER ==================== -->
     <div id="view-menu-builder" class="app-view">
         <div class="page-icon-header">
-            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            </div>
+            <!-- Custom Unique Section Logo: Menu Builder -->
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <path d="M128 176h256M128 256h256M128 336h160" fill="none" stroke="url(#electricGlow)" stroke-width="32" stroke-linecap="round"/>
+            </svg>
             <h2>Custom Menu Builder</h2>
             <p>Create custom menus and inline/reply buttons for your bot</p>
         </div>
@@ -849,9 +871,12 @@
     <!-- ==================== 7. LOGIN WIDGET ==================== -->
     <div id="view-login-widget" class="app-view">
         <div class="page-icon-header">
-            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.778-7.778zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-            </div>
+            <!-- Custom Unique Section Logo: Login Widget -->
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <path d="M220 336l-80-80 80-80M140 256h180" fill="none" stroke="url(#electricGlow)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M320 160h72a32 32 0 0132 32v128a32 32 0 01-32 32h-72" fill="none" stroke="url(#electricGlow)" stroke-width="28" stroke-linecap="round"/>
+            </svg>
             <h2>Login Widget</h2>
             <p>Allow users to log in to your website or app with their Telegram account.</p>
         </div>
@@ -874,9 +899,12 @@
     <!-- ==================== 8. BOT SETTINGS / MODES ==================== -->
     <div id="view-bot-settings" class="app-view">
         <div class="page-icon-header">
-            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="7" r="4"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="16" y1="15" x2="16" y2="15"/></svg>
-            </div>
+            <!-- Custom Unique Section Logo: Bot Settings -->
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <circle cx="256" cy="220" r="64" fill="none" stroke="url(#electricGlow)" stroke-width="28"/>
+                <path d="M144 380c20-64 70-96 112-96s92 32 112 96" fill="none" stroke="url(#electricGlow)" stroke-width="28" stroke-linecap="round"/>
+            </svg>
             <h2>Bot Settings</h2>
             <p>Configure bot rights, group permissions, and execution modes.</p>
         </div>
@@ -933,9 +961,14 @@
     <!-- ==================== 9. MINI APPS ==================== -->
     <div id="view-miniapps" class="app-view">
         <div class="page-icon-header">
-            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            </div>
+            <!-- Custom Unique Section Logo: Mini Apps -->
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <rect x="128" y="128" width="100" height="100" rx="20" fill="url(#electricGlow)"/>
+                <rect x="284" y="128" width="100" height="100" rx="20" fill="rgba(255,255,255,0.2)"/>
+                <rect x="128" y="284" width="100" height="100" rx="20" fill="rgba(255,255,255,0.2)"/>
+                <rect x="284" y="284" width="100" height="100" rx="20" fill="url(#electricGlow)"/>
+            </svg>
             <h2>Mini Apps</h2>
             <p>Use JavaScript to create infinitely flexible interfaces launched inside Telegram. <a href="#">Read More ></a></p>
         </div>
@@ -986,9 +1019,12 @@
     <!-- ==================== 10. BROADCASTING ==================== -->
     <div id="view-broadcasting" class="app-view">
         <div class="page-icon-header">
-            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </div>
+            <!-- Custom Unique Section Logo: Broadcasting -->
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <path d="M120 340l272-132L120 172v168zM120 256h120" fill="none" stroke="url(#electricGlow)" stroke-width="28" stroke-linejoin="round"/>
+                <path d="M340 180c30 20 50 50 50 76s-20 56-50 76" fill="none" stroke="url(#electricGlow)" stroke-width="20" stroke-linecap="round"/>
+            </svg>
             <h2>Broadcasting & Posts</h2>
             <p>Send instant announcements or posts to channels, groups, or users.</p>
         </div>
@@ -1006,9 +1042,12 @@
     <!-- ==================== 11. HEALTH & LOGS ==================== -->
     <div id="view-health" class="app-view">
         <div class="page-icon-header">
-            <div style="width: 64px; height: 64px; margin: 0 auto 12px; background: rgba(59, 130, 246, 0.15); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#electricGlow)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
+            <!-- Custom Unique Section Logo: Health & Logs -->
+            <svg viewBox="0 0 512 512" width="100%" height="100%">
+                <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#darkBg)" stroke="url(#electricGlow)" stroke-width="4"/>
+                <path d="M256 120l128 48v112c0 80-60 130-128 152-68-22-128-72-128-152V168l128-48z" fill="none" stroke="url(#electricGlow)" stroke-width="24" stroke-linejoin="round"/>
+                <path d="M200 260l40 40 80-80" fill="none" stroke="#10B981" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             <h2>System Health & Logs</h2>
             <p>Real-time server monitoring, webhook diagnostics, and activity logs.</p>
         </div>
@@ -1022,7 +1061,7 @@
         </div>
     </div>
 
-    <!-- 🔻 Floating Bottom Center Back Button (Requested) -->
+    <!-- 🔻 Floating Bottom Center Back Button (Centered Perfectly) -->
     <div class="bottom-back-container hidden" id="bottomBackContainer">
         <button class="bottom-back-btn" onclick="goBack()">
             <i class="fa-solid fa-arrow-left"></i> Back to Menu
