@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>توسعه‌یافته | مینی اپلیکیشن رمزارز تلگرام</title>
+    <!-- Telegram Official WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Official TON Connect SDK -->
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <style>
+        /* متغیرهای رنگی و استایل مدرن اپل/تلگرام */
+        :root {
+            --bg-color: #000000;
+            --card-bg: #1c1c1e;
+            --accent-color: #0a84ff;
+            --success-color: #30d158;
+            --text-color: #ffffff;
+            --text-secondary: #8e8e93;
+            --radius-main: 24px;
+            --radius-card: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 120px;
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .page.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* داک پایین صفحه (تب‌بار) */
+        .tab-bar-container {
+            position: fixed;
+            bottom: 25px;
+            left: 20px;
+            right: 20px;
+            height: 75px;
+            background-color: rgba(28, 28, 30, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.3s;
+            border-radius: 20px;
+            padding: 8px 0;
+        }
+
+        .tab-item.active {
+            color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        .tab-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .card {
+            width: 100%;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--radius-card);
+            margin-bottom: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .coin-balance {
+            font-size: 48px;
+            font-weight: 800;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* استایل کارت گرافیک اتوماینینگ در هوم */
+        .gpu-mining-card {
+            background: linear-gradient(145deg, #1c1c1e, #2c2c2e);
+            border: 2px solid var(--accent-color);
+            text-align: center;
+            padding: 30px;
+            border-radius: var(--radius-main);
+            width: 100%;
+            max-width: 350px;
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(10, 132, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gpu-mining-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(10,132,255,0.1) 0%, transparent 70%);
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .gpu-image {
+            width: 120px;
+            height: 120px;
+            background: url('https://cdn-icons-png.flaticon.com/512/900/900350.png') center/contain no-repeat;
+            margin: 0 auto 15px;
+            filter: drop-shadow(0 0 15px rgba(10, 132, 255, 0.5));
+            animation: pulseGpu 2s infinite ease-in-out;
+            position: relative;
+        }
+
+        @keyframes pulseGpu {
+            0% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(10, 132, 255, 0.5)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(10, 132, 255, 0.8)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(10, 132, 255, 0.5)); }
+        }
+
+        .btn-action {
+            width: 100%;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-action:active {
+            transform: scale(0.96);
+            opacity: 0.9;
+        }
+
+        /* فیلدهای پروفایل */
+        .profile-field-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .profile-field-group label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .profile-field-group input {
+            width: 100%;
+            padding: 14px;
+            background: #000;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .profile-field-group input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .info-row span:first-child {
+            color: var(--text-secondary);
+        }
+
+        .upgrade-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .btn-upgrade {
+            background: rgba(10, 132, 255, 0.15);
+            color: var(--accent-color);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- تب اول: هوم و اتوماینینگ کارت گرافیکی -->
+    <div id="tab-home" class="page active">
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <span style="color: var(--text-secondary); font-size: 12px;">کاربر گرامی:</span><br>
+                <strong id="home-username" style="font-size: 18px;">بارگذاری...</strong>
+            </div>
+            <div style="text-align: left;">
+                <span style="color: var(--success-color); font-weight: bold; font-size: 18px;" id="active-coin-symbol">COIN</span>
+            </div>
+        </div>
+
+        <div class="coin-balance">
+            <span id="balance-display">0</span>
+            <span id="coin-symbol-display">🪙</span>
+        </div>
+
+        <!-- بخش اتوماینینگ با عکس کارت گرافیک -->
+        <div class="gpu-mining-card">
+            <div class="gpu-image"></div>
+            <h3 style="margin-bottom: 8px; position: relative; z-index: 2;">معدن‌کاوی خودکار (Auto Mining)</h3>
+            <p id="mining-status-text" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; position: relative; z-index: 2;">وضعیت: متوقف شده</p>
+            <button class="btn-action" id="toggle-mining-btn" onclick="toggleAutoMining()">شروع استخراج خودکار ⚡</button>
+        </div>
+    </div>
+
+    <!-- تب دوم: ارتقای سخت‌افزار (Level) -->
+    <div id="tab-level" class="page">
+        <h2 style="margin-bottom: 20px; font-weight: 800; align-self: flex-start;">ارتقای سخت‌افزار (سرعت ماینینگ)</h2>
+        <div class="card">
+            <div class="upgrade-row">
+                <div>
+                    <h4>پردازنده (CPU)</h4>
+                    <span style="font-size: 13px; color: var(--text-secondary);">سطح: <span id="lvl-cpu">0</span> (+1 سرعت)</span>
+                </div>
+                <button class="btn-upgrade" onclick="purchaseHardware('cpu')"><span id="cost-cpu">50</span></button>
+            </div>
+            <div class="upgrade-row">
+                <div>
+                    <h4>کارت گرافیک (GPU)</h4>
+                    <span style="font-size: 13px; color: var(--text-secondary);">سطح: <span id="lvl-gpu">0</span> (+1 سرعت)</span>
+                </div>
+                <button class="btn-upgrade" onclick="purchaseHardware('gpu')"><span id="cost-gpu">100</span></button>
+            </div>
+            <div class="upgrade-row">
+                <div>
+                    <h4>حافظه رم (RAM)</h4>
+                    <span style="font-size: 13px; color: var(--text-secondary);">سطح: <span id="lvl-ram">0</span> (+1 سرعت)</span>
+                </div>
+                <button class="btn-upgrade" onclick="purchaseHardware('ram')"><span id="cost-ram">150</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- تب سوم: پروفایل، ساخت ارز و اتصال به ولت -->
+    <div id="tab-profile" class="page">
+        <h2 style="margin-bottom: 20px; font-weight: 800; align-self: flex-start;">پروفایل و تنظیمات پیشرفته</h2>
+        
+        <!-- اطلاعات حساب تلگرام -->
+        <div class="card" style="background: linear-gradient(145deg, #1c1c1e, #2c2c2e); border: 1px solid var(--accent-color);">
+            <h3 style="color: var(--accent-color); margin-bottom: 15px; font-size: 16px;">اطلاعات اکانت تلگرام شما</h3>
+            <div class="info-row">
+                <span>نام کاربر:</span>
+                <strong id="prof-name">-</strong>
+            </div>
+            <div class="info-row">
+                <span>یوزرنیم:</span>
+                <strong id="prof-username">-</strong>
+            </div>
+            <div class="info-row" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
+                <span>آیدی عددی (UID):</span>
+                <strong id="prof-id" style="font-family: monospace; color: var(--success-color);">-</strong>
+            </div>
+        </div>
+
+        <!-- بخش ساخت و انتخاب ارز دیجیتال دلخواه -->
+        <div class="card">
+            <h3 style="color: var(--success-color); margin-bottom: 15px; font-size: 16px;">ساخت ارز دیجیتال جدید اختصاصی</h3>
+            <div class="profile-field-group">
+                <label>نام کامل ارز (مثلاً: MyCoin):</label>
+                <input type="text" id="custom-token-name" placeholder="نام ارز خود را بنویسید..." oninput="saveCustomToken()">
+            </div>
+            <div class="profile-field-group" style="margin-bottom: 0;">
+                <label>نماد/اموجی ارز (مثلاً: 💎):</label>
+                <input type="text" id="custom-token-symbol" placeholder="یک اموجی یا کلمه مخفف..." oninput="saveCustomToken()">
+            </div>
+        </div>
+
+        <!-- اتصال سریع ولت به پنل تلگرام -->
+        <div class="card" style="border: 1px solid rgba(48, 209, 88, 0.4);">
+            <h3 style="text-align: center; color: var(--success-color); margin-bottom: 15px; font-size: 16px;">اتصال سریع به کیف پول (TON Connect)</h3>
+            <div id="connect-wallet-btn" style="display: flex; justify-content: center;"></div>
+            <div id="wallet-info-box" style="display: none; margin-top: 15px; font-size: 13px; word-break: break-all; background: #000; padding: 12px; border-radius: 10px; color: var(--success-color); text-align: center; border: 1px dashed var(--success-color);"></div>
+        </div>
+    </div>
+
+    <!-- نوار ناوبری پایین (تب‌بار) -->
+    <div class="tab-bar-container">
+        <div class="tab-item active" onclick="switchTab('tab-home', this)">
+            <div class="tab-icon">🏠</div>
+            <div>هوم (ماینینگ)</div>
+        </div>
+        <div class="tab-item" onclick="switchTab('tab-level', this)">
+            <div class="tab-icon">🚀</div>
+            <div>ارتقاء سرعت</div>
+        </div>
+        <div class="tab-item" onclick="switchTab('tab-profile', this)">
+            <div class="tab-icon">👤</div>
+            <div>پروفایل من</div>
+        </div>
+    </div>
+
+    <script>
+        // راه‌اندازی اولیه وب‌اپ تلگرام
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        // دریافت اطلاعات کاربر به صورت امن از API تلگرام
+        const tgUser = tg.initDataUnsafe?.user || {
+            id: 123456789,
+            first_name: "کاربر تستی",
+            username: "test_user"
+        };
+
+        // کلید ذخیره‌سازی مخصوص کاربر
+        const STORAGE_KEY = `crypto_autominer_state_${tgUser.id}`;
+        
+        let state = {
+            balance: 0,
+            miningSpeed: 1,
+            isMiningActive: false,
+            tokenName: "MyCoin",
+            tokenSymbol: "🪙",
+            upgrades: {
+                cpu: { level: 0, baseCost: 50 },
+                gpu: { level: 0, baseCost: 100 },
+                ram: { level: 0, baseCost: 150 }
+            }
+        };
+
+        // بارگذاری داده‌های ذخیره شده
+        if (localStorage.getItem(STORAGE_KEY)) {
+            try {
+                let savedState = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                state = { ...state, ...savedState };
+            } catch (e) {
+                console.error("خطا در بارگذاری داده‌ها");
+            }
+        }
+
+        // مقداردهی اولیه اطلاعات تلگرام در پروفایل
+        document.getElementById('home-username').innerText = tgUser.first_name;
+        document.getElementById('prof-name').innerText = tgUser.first_name;
+        document.getElementById('prof-username').innerText = tgUser.username ? `@${tgUser.username}` : 'تنظیم نشده';
+        document.getElementById('prof-id').innerText = tgUser.id;
+
+        // مقداردهی فیلدهای نام و نماد ارز
+        document.getElementById('custom-token-name').value = state.tokenName;
+        document.getElementById('custom-token-symbol').value = state.tokenSymbol;
+
+        // اتصال سریع ولت TON Connect
+        const tonConnectUI = new TONConnectUI.TonConnectUI({
+            manifestUrl: 'https://raw.githubusercontent.com/ton-community/tonconnect-manifest/main/tonconnect-manifest.json',
+            buttonRootId: 'connect-wallet-btn'
+        });
+
+        tonConnectUI.onStatusChange(wallet => {
+            const walletBox = document.getElementById('wallet-info-box');
+            if (wallet) {
+                walletBox.style.display = 'block';
+                walletBox.innerHTML = `کیف پول متصل شد:<br><br><span style="font-family:monospace; color:#fff;">${wallet.account.address}</span>`;
+            } else {
+                walletBox.style.display = 'none';
+            }
+        });
+
+        // محاسبه قیمت ارتقاء سخت‌افزار
+        function getCost(type) {
+            let item = state.upgrades[type];
+            return Math.floor(item.baseCost * Math.pow(1.5, item.level));
+        }
+
+        // به‌روزرسانی ظاهر صفحه
+        function updateUI() {
+            // آپدیت نام و نماد ارز در کل اپلیکیشن
+            document.getElementById('balance-display').innerText = Math.floor(state.balance).toLocaleString('en-US');
+            document.getElementById('coin-symbol-display').innerText = state.tokenSymbol;
+            document.getElementById('active-coin-symbol').innerText = state.tokenName;
+
+            // آپدیت قیمت‌ها و سطوح
+            document.getElementById('lvl-cpu').innerText = state.upgrades.cpu.level;
+            document.getElementById('cost-cpu').innerText = getCost('cpu').toLocaleString('en-US');
+            document.getElementById('lvl-gpu').innerText = state.upgrades.gpu.level;
+            document.getElementById('cost-gpu').innerText = getCost('gpu').toLocaleString('en-US');
+            document.getElementById('lvl-ram').innerText = state.upgrades.ram.level;
+            document.getElementById('cost-ram').innerText = getCost('ram').toLocaleString('en-US');
+
+            // وضعیت دکمه استخراج خودکار
+            const miningBtn = document.getElementById('toggle-mining-btn');
+            const statusText = document.getElementById('mining-status-text');
+            const gpuImg = document.querySelector('.gpu-image');
+
+            if (state.isMiningActive) {
+                miningBtn.innerText = "توقف استخراج ⏸️";
+                miningBtn.style.background = "#ff3b30";
+                statusText.innerText = "وضعیت: در حال استخراج فعال... 🚀";
+                statusText.style.color = "var(--success-color)";
+                gpuImg.style.animationPlayState = 'running';
+            } else {
+                miningBtn.innerText = "شروع استخراج خودکار ⚡";
+                miningBtn.style.background = "var(--accent-color)";
+                statusText.innerText = "وضعیت: متوقف شده";
+                statusText.style.color = "var(--text-secondary)";
+                gpuImg.style.animationPlayState = 'paused';
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        // دکمه استارت/استاپ ماینینگ
+        function toggleAutoMining() {
+            state.isMiningActive = !state.isMiningActive;
+            saveState();
+            updateUI();
+            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+        }
+
+        // هسته ماینینگ خودکار (تا زمانی که HTML باز است)
+        setInterval(() => {
+            if (state.isMiningActive) {
+                // محاسبه سرعت استخراج بر اساس ارتقاهای انجام شده
+                let gain = 1 + (state.upgrades.cpu.level + state.upgrades.gpu.level + state.upgrades.ram.level) * 0.5;
+                state.balance += gain;
+                saveState();
+                
+                // فقط اگر در صفحه هوم هستیم، عدد را آپدیت کن تا عملکرد بهتری داشته باشیم
+                if (document.getElementById('tab-home').classList.contains('active')) {
+                    document.getElementById('balance-display').innerText = Math.floor(state.balance).toLocaleString('en-US');
+                }
+            }
+        }, 1000); // هر ۱ ثانیه امتیاز اضافه می‌شود
+
+        // خرید ارتقاء سخت‌افزار
+        function purchaseHardware(type) {
+            let cost = getCost(type);
+            if (state.balance >= cost) {
+                state.balance -= cost;
+                state.upgrades[type].level++;
+                saveState();
+                updateUI();
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            } else {
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                tg.showAlert("موجودی شما برای این ارتقاء کافی نیست!");
+            }
+        }
+
+        // ذخیره تغییرات نام و نماد ارز کاربر
+        function saveCustomToken() {
+            let newName = document.getElementById('custom-token-name').value.trim();
+            let newSymbol = document.getElementById('custom-token-symbol').value.trim();
+            
+            state.tokenName = newName ? newName : "MyCoin";
+            state.tokenSymbol = newSymbol ? newSymbol : "🪙";
+            
+            saveState();
+            updateUI();
+        }
+
+        // جابجایی بین تب‌ها با انیمیشن
+        function switchTab(pageId, element) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+
+            document.getElementById(pageId).classList.add('active');
+            element.classList.add('active');
+            
+            if (tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+        }
+
+        // اجرای اولیه توابع
+        updateUI();
+    </script>
+</body>
+</html>
